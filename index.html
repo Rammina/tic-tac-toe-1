@@ -1,0 +1,108 @@
+<!-- random comment -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="height=device-height,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable, maximum-scale=2.0, minimum-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" type="text/css" href="shared/css/shared.css">
+    <link rel="stylesheet" type="text/css" href="shared/css/shared-bp.css">
+    <link rel="stylesheet" type="text/css" href="main/css/main.css">
+    <link rel="stylesheet" type="text/css" href="main/css/main-bp.css">
+</head>
+<body>
+
+
+    <div class="backdrop" id="intro-backdrop">
+            <section class="modal-container" id="intro-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                
+                <h1 id="intro-modal-header" class="modal-header">Player 1's Name</h1>
+                
+                <form id="modal-form">
+                    <label class="form-label" id="player-name-label" for="player-name-field">Please input your name:</label>
+                    <div>
+                        <input id="player-name-field" class="text-field" type="text" name="title" placeholder="Anonymous" required="true" maxlength="10">
+                    </div>
+                    <input type="submit" class="form-submit" id="intro-submit" value="Submit">
+                </form>
+            
+            </section>
+    </div>
+
+    <div class="backdrop" id="turn-backdrop">
+            <section class="modal-container" id="turn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <h1 id="turn-modal-header" class="modal-header">Player 1's Turn</h1>
+            </section>
+    </div>
+
+    <div class="backdrop" id="win-backdrop">
+            <section class="modal-container" id="win-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <h1 id="win-modal-header" class="modal-header">Player 1 Wins!</h1>
+
+                <p class="modal-paragraph">Would you like to play another game?</p>
+                
+                <div id="win-button-container">
+                    <button class="modal-button" id="quit-modal-button">No</button>
+                    <button class="modal-button" id="again-modal-button">Yes</button>
+                </div>
+            </section>
+    </div>
+
+    <header class="main-header" id="main-page-header">
+        <nav class="main-nav">
+
+            <a class="nav__title" href="#">50 Mira</a>            
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="section-container" id="main-menu">
+            <h1 class="menu-header">50 mira</h1>
+
+            <p id="play-click"> Click to start</p>
+        </section>
+        <section class="section-container" id="score-section-container">
+            
+            <table class="score-container">
+                <!-- <h1>Scoreboard</h1> -->
+                <thead>
+                    <tr class="score-row">
+                        <td class="score-cell" id="player-one-name">Player 1</td>
+                        <td class="score-cell" id="player-two-name">Player 2</td>
+                    </tr>
+                </thead>
+                    
+                <tr class="score-row">
+                    <td class="score-cell" id="player-one-score">0</td>
+                    <td class="score-cell" id="player-two-score">0</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="section-container" id="board-section">
+            
+            <div class="board-container">
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+                    <button class="board-square"></button>
+
+            </div>
+
+            <button id="surrender-button">Surrender</button>
+            
+
+        </section>
+    </main>
+    <script type="text/javascript" src="shared/js/shared.js"></script>
+    <script type="text/javascript" src="main/js/main.js"></script>
+</body>
+</html>

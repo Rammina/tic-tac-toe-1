@@ -1,0 +1,21 @@
+/* Width breakpoints */
+
+@media screen and (min-width: 700px) {
+	main {
+
+	}
+}
+
+@media screen and (min-width: 1000px){
+	.nav__title{
+		margin-left: calc(45vw - 28rem);
+	}
+}
+
+/*Width and height breakpoints*/
+
+@media screen and (min-width: 450px) and (min-height: 450px){
+	.main-header.show{
+		display: block;
+	}
+}

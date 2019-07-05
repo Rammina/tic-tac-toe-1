@@ -1,0 +1,190 @@
+/*defaults*/
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Roboto&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+/*Space reset*/
+* {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+}
+
+html {
+    width: 100%;
+    margin: 0;
+    /*min-height: 200rem;*/
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+	font-family: 'Roboto', sans-serif;
+    width: 100%;
+    /*height: 200rem;*/
+    min-height: 100%;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+	font-size: 1.5rem;
+}
+
+p {
+	font-size: 1.1rem;
+}
+
+main {
+    background-color: white;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    outline: none;
+    font-size: 1.1rem;
+    padding: 0.7rem;
+    font-family: 'Roboto', sans-serif;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+button:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000; 
+  	box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000;
+}
+
+input:focus {
+    outline: none;
+   	-webkit-box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000; 
+    box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000; 
+    box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000;
+}
+
+div:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000; 
+    box-shadow: inset 0px 0px 0.5px 1px #FFFFFF, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #000000;
+}
+
+li {
+    list-style-type: none;
+}
+
+.loader-container{
+    z-index: 1000;
+    position: fixed;
+    width: calc(100vw - (100vw - 100%));
+    width: calc(100vw - (100vw - 100%));
+    height: 100vh;
+    min-height: 100vh;
+    vertical-align: middle;
+
+    background-color: #EEE9E3;
+}
+
+.loader__message-container{
+    position: relative;
+    display: block;
+    border-radius: 50%;
+    width: 17rem;
+    height: 12rem;
+    margin: calc(50vh - 4.5rem) auto;
+    /* -webkit-box-shadow: inset 0px 0px 2px 10px #FFFFFF;
+    -moz-box-shadow: inset 0px 0px 2px 10px #FFFFFF;
+    box-shadow: inset 0px 0px 2px 10px #FFFFFF; */
+   
+}
+
+.loader__p {
+    margin: 1rem auto;
+    color: #3d2922;
+    /*text-shadow: 0 0 0 2px rgb(240, 240, 240);*/
+    font-size: 1.55rem;
+    font-family: 'Merriweather', serif;
+    text-align: center;
+    text-transform: uppercase;
+    /*text-shadow: 0px 0px 1px #aaa, 0px 0px 2px #111;*/
+    /*font-style: italic;*/
+}
+
+.no-display.loader-container {
+    display: none;
+ }
+
+.no-display.hide-png {
+    display: none;
+}
+
+.no-display.hide-svg {
+    display: none;
+}
+
+/*navigation bar*/
+.main-header{
+    z-index: 100;
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 3.5rem;
+    padding: 0rem;
+    padding-right: 0.7rem;
+    background-color: #3d2922;
+    color: #EEE9E3;
+
+}
+.main-nav{
+    /*z-index: 101;*/
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /*overflow: hidden;*/
+}
+
+.nav__title{
+    z-index: 102;
+    margin-left: 0.5rem;
+    display: inline-block;
+    text-decoration: none;
+    height: 3.5rem;
+    line-height: 3.4rem;
+    padding: 0 0.7rem;
+    color: #EEE9E3;
+    font-size: 2rem;
+    /*overflow: hidden;*/
+    /*margin-left: ;*/
+
+}
+
+.nav__title:focus {
+    -webkit-box-shadow: inset 0px 0px 0.5px 1px #000000, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #FFFFFF; 
+    box-shadow: inset 0px 0px 0.5px 1px #000000, inset 0px 0px 1px 2px #969696, inset 0px 0px 2px 3px #FFFFFF;
+}
+
+.nav__title-img {
+    padding-top: 0.4rem;
+}
