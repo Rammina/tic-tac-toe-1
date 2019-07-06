@@ -227,7 +227,14 @@ const displayController = (() => {
 			turnHeader.innerText = `${info.getPlayer(0).getName()}'s Turn`;
 			console.log(turnHeader.innerText);
 		}
+
 		helper.openModal(turnModal);
+		
+		for(let i = 0; i < squares.length; i++) {
+			if(!(squares[i].classList.contains("cross") || squares[i].classList.contains("circle"))) { 
+				gameBoard.enableButton(i);
+			}
+		}
 		setTimeout(function() {
 
 			helper.closeModal(turnModal);
@@ -253,6 +260,9 @@ const displayController = (() => {
 		}
 		else{
 			icon = "cross";
+		}
+		for(let i = 0; i < squares.length; i++) {
+			gameBoard.disableButton(i);
 		}
 	};
 	const endGame = (winner) => {
@@ -340,7 +350,11 @@ const Player = (name, turn) => {
 		else{
 			console.log("turn ended without earning a point ");
 			displayController.endTurn();
-			displayController.startTurn();
+
+			setTimeout(function(){
+				displayController.startTurn();
+			}, 900)
+			
 		}
 	};
 

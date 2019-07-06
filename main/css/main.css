@@ -32,10 +32,9 @@ thead, tbody, tr, td{
 }
 
 .backdrop {
-
     display: block;
     visibility: hidden;
-    /*opacity: 0;*/
+    /* opacity: 0; */
     z-index: 200;
     position: fixed;
     /*display: none;*/
@@ -48,7 +47,7 @@ thead, tbody, tr, td{
     /*opacity: 0.7;*/
     bottom: 0;
     right: 0;
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
 }
 
 .backdrop.show{
@@ -292,22 +291,76 @@ thead, tbody, tr, td{
 }
 
 .board-container{
-	display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 	position: relative;
 	margin: 0 auto;
 	top: calc(40vh - 6.2rem);
 	width: 13.3rem;
-	max-width: 24rem;
-	/*background-color: pink;*/
+    max-width: 24rem;
+    height: 12.75rem;
+    /*background-color: pink;*/
+    background-color: #333;
+    /* border: 5px solid white; */
+    box-sizing: content-box;
 }
 
 .board-square{
-	margin: 0.15rem 0;
-	width: 4.25rem;
-	height: 4.25rem;
+	margin: 0;
+	width: 33.3%;
+	height: 33.3%;
 	border-radius: 0;
-	border: none;
-	background-color: #333;
+    border: 2px solid white;
+}
+
+.board-square:nth-of-type(1) {
+    border-top: none;
+    border-left: none;
+}
+
+.board-square:nth-of-type(2) {
+    border-top: none;
+}
+
+.board-square:nth-of-type(3) {
+    border-top: none;
+    border-right: none;
+}
+
+.board-square:nth-of-type(4) {
+    border-left: none;
+}
+
+.board-square:nth-of-type(6) {
+    border-right: none;
+}
+
+.board-square:nth-of-type(7) {
+    border-left: none;
+    border-bottom: none;
+}
+
+.board-square:nth-of-type(8) {
+    border-bottom: none;
+}
+
+.board-square:nth-of-type(9) {
+    border-bottom: none;
+    border-right: none;
+}
+
+.board-square.cross {
+    /* <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */
+    background: url(../images/x-icon.png);
+    background-size: cover;
+}
+
+.board-square.circle {
+    /* <div>Icons made by <a href="https://www.flaticon.com/authors/balraj-chana" title="Balraj Chana">Balraj Chana</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */
+    background: url(../images/circle-icon.png);
+    background-size: cover;
 }
 
 #surrender-button{
