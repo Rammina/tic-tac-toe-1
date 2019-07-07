@@ -8,7 +8,27 @@
 		/*position: absolute;*/
 		/*bottom: 3.5rem;*/
 	}
+	.menu-header {
+		top: calc(45vh - 2.85rem);
+		font-size: 3.2rem;
+	}
+	#play-click {
+		top: calc(60vh - 2.5rem);
+		font-size: 1.35rem;
+	}
 	#score-section-container{
 		top: 3.5rem;
+	}
+}
+
+@media screen and (min-width: 700px) and (min-height: 700px){
+	
+	.menu-header {
+		top: calc(40vh - 2.85rem);
+		font-size: 5rem;
+	}
+	#play-click {
+		top: calc(56vh - 2.5rem);
+		font-size: 1.5rem;
 	}
 }
