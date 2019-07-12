@@ -124,6 +124,41 @@ const gameBoard = (() => {
 
 	};
 
+	const isDead = () => {
+		let empty = 0;
+		let emptySquare = null;
+		for(let i = 0; i < array.length; i++) {
+			if(array[i] === "") {
+				// Make sure that there is only one empty square
+				if(empty === 0) {
+
+					empty++;
+
+					// Keep track of a single empty square
+					emptySquare = i;
+				}
+				else{
+					// Reset the empty square tracking  if there are more than two empty squares
+					emptySquare = null;
+					return false;	
+				}
+			
+			}
+		}
+		
+		// Check if filling this Single empty square with either icon wins the game or not
+		array[emptySquare] = "X";
+		if(lineFormed("X") === true) {
+			return false;
+					
+		}
+		array[emptySquare] = "O";
+		if(lineFormed("O") === true) {
+			return false;
+		}
+		return true;
+	};
+
 	const render = () =>{
 		// I'm not sure yet
 	}
@@ -136,7 +171,7 @@ const gameBoard = (() => {
 		helper.hideSection(board);
 	};
 
-	return {disableButton, enableButton, fillSquare, emptySquares, lineFormed, show, hide};
+	return {disableButton, enableButton, fillSquare, emptySquares, lineFormed, isDead, show, hide};
 })();
 
 const scoreBoard = (() => {
@@ -198,6 +233,7 @@ const scoreBoard = (() => {
 
 const displayController = (() => {
 	
+	let playerTurn = null;
 	let turn = 1;
 	let icon = "cross";
 	let squares = document.querySelectorAll(".board-square");
@@ -212,6 +248,10 @@ const displayController = (() => {
 		
 		return turn;
 	};
+	const getPlayerTurnNumber = () => {
+		
+		return playerTurn;
+	}
 	const getIcon = () => {
 		let currentIcon = icon;
 		return currentIcon;
@@ -219,7 +259,7 @@ const displayController = (() => {
 
 	const startTurn = () => {
 		// Display the modal or backdrop that states whose turn it is
-		if((getTurnNumber()) % 2 === 0) {
+		if(getPlayerTurnNumber() % 2 === 0) {
 			turnHeader.innerText = `${info.getPlayer(1).getName()}'s Turn`;
 			console.log(turnHeader.innerText);
 		}
@@ -244,6 +284,17 @@ const displayController = (() => {
 	const startGame = () => {
 		turn = 1;
 		icon = "cross";
+		playerTurn = playerTurn || (Math.floor((Math.random() * 2) + 1));
+
+		if(playerTurn % 2 !== 0) {
+			info.getPlayer(0).setIcon(1);
+			info.getPlayer(1).setIcon(2);
+		}
+		else{
+			info.getPlayer(0).setIcon(2);
+			info.getPlayer(1).setIcon(1);
+		}
+		
 		for(let i = 0; i < squares.length; i++) {
 			squares[i].classList.remove("cross");
 			squares[i].classList.remove("circle");
@@ -254,6 +305,7 @@ const displayController = (() => {
 	};
 
 	const endTurn = () => {
+		playerTurn++;
 		turn++;
 		if((getTurnNumber()) % 2 === 0) {
 			icon = "circle";
@@ -268,7 +320,14 @@ const displayController = (() => {
 	const endGame = (winner) => {
 		// State the winner of the game
 		console.log("endgame was called ");
-		winHeader.innerText = `${winner} Wins!`;
+		if(winner === null) {
+			winHeader.innerText = `Draw! No one wins...`;
+
+		}
+		else{
+			winHeader.innerText = `${winner} Wins!`;
+		}
+		
 		helper.openModal(winModal);
 
 	}
@@ -277,7 +336,7 @@ const displayController = (() => {
 		squares[i].addEventListener("click", function(){
 			if(!(squares[i].classList.contains("cross") || squares[i].classList.contains("circle"))) {
 				squares[i].classList.add(getIcon());
-				if((getTurnNumber()) % 2 === 0) {
+				if((getPlayerTurnNumber()) % 2 === 0) {
 					info.getPlayer(1).placeIcon(i);
 				}
 				else{
@@ -289,8 +348,8 @@ const displayController = (() => {
 	}
 
 	surrenderElement.addEventListener("click", function(){
-		if((getTurnNumber()) % 2 === 0) {
-			info.getPlayer(1).surrender();			
+		if((getPlayerTurnNumber()) % 2 === 0) {
+			info.getPlayer(1).surrender(getPlayerTurnNumber);			
 			console.log("layer 2 has already surrendered ");
 		}
 		else{
@@ -304,17 +363,20 @@ const displayController = (() => {
 
 
 // Player factory function
-const Player = (name, turn) => {
+const Player = (name) => {
 	
+	let icon;
+	let points = 0;
+
 	const thisPlayer = this;
 	const getName = () => name;
-	const getIcon = (turn) => {
-		if(turn === 1) {return "X";}
-		else if(turn === 2) {return "O";}
+	const setIcon = (turn) => {
+		if((turn % 2) !== 0) {icon = "X";}
+		else if((turn % 2) === 0) {icon = "O";}
 	};
 	
-	let icon = getIcon(turn);
-	let points = 0;
+	
+	
 	const getPoints = () => {
 		return points;
 	};
@@ -327,38 +389,59 @@ const Player = (name, turn) => {
 		displayController.endGame(getName());
 	};
 	
-	const surrender = () =>{
+	const surrender = (turn) =>{
 		// Temporary placeholder
 		console.log(`${name} Has surrendered`);
-		if(icon === "X") {
-			info.getPlayer(1).earnPoint();
+		if((turn % 2) === 0) {
+			setTimeout(function () {
+
+				info.getPlayer(1).earnPoint();
+			}, 750);
+			
 
 		}
-		else if(icon === "O") {
-			info.getPlayer(0).earnPoint();
+		else {
+			setTimeout(function () {
+
+				info.getPlayer(0).earnPoint();	
+			}, 750);
+			
 		}
 		
 	};
-	// Debating whether to keep this here
+	
 	const placeIcon = (position) => {
 		gameBoard.fillSquare(position, icon);
 		console.log("checking between earned point or not ");
-		if(gameBoard.lineFormed(icon)) {
-			earnPoint();
+		displayController.endTurn();
+		if(gameBoard.isDead()) {
+			setTimeout(function () {
+
+				displayController.endGame(null);
+			}, 750);
+			
+
+		}
+		else if(gameBoard.lineFormed(icon)) {
+			setTimeout(function () {
+
+				earnPoint();
+			}, 750);
+			
 
 		}
 		else{
 			console.log("turn ended without earning a point ");
-			displayController.endTurn();
+			
 
 			setTimeout(function(){
 				displayController.startTurn();
-			}, 900)
+			}, 750);
 			
 		}
 	};
 
-	return {getName, getPoints, getIcon, placeIcon, surrender, earnPoint};
+	return {getName, getPoints, setIcon, placeIcon, surrender, earnPoint};
 }
 
 const mainMenu = (() => {
@@ -394,6 +477,7 @@ const promptNames = (() => {
 		let submitButton = document.getElementById("intro-submit");
 		let playerNumber = 1;
 		let done = false;
+		let namePlaceHolder = [];
 
 		const openIntro = () => {
 			helper.openModal(introModal);
@@ -407,7 +491,9 @@ const promptNames = (() => {
 			}
 			let playerName = nameField.value;
 			nameField.value = "";
-			let challenger = Player(playerName, playerNumber);
+			// namePlaceHolder.push(playerName);
+
+			let challenger = Player(playerName);
 			info.insertPlayer(challenger);
 			playerNumber++;
 
@@ -422,10 +508,7 @@ const promptNames = (() => {
 			}
 			introHeader.innerText = `Player ${playerNumber}'s Name`;
 		}
-
 		
-		// helper.openModal(introModal);
-
 		submitButton.addEventListener("click", function(event){
 			event.preventDefault();
 			submitIntro();

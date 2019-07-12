@@ -17,7 +17,34 @@
 		font-size: 1.35rem;
 	}
 	#score-section-container{
-		top: 3.5rem;
+		top: 0rem;
+	}
+	.score-row{
+		font-size: 1.5rem;
+	}
+	.board-container{
+		width: 15rem;
+		height: 15rem;
+		top: calc(40vh - 8.2rem);
+	}
+	#surrender-button{
+
+		top: calc(45vh - 8rem);
+	}
+}
+
+
+@media screen and (min-width: 600px) and (min-height: 600px){
+	.score-container{
+		top: calc(20vh - 4.2rem);
+	}
+	.score-row{
+		font-size: 1.7rem;
+	}
+	.board-container{
+		width: 18rem;
+		height: 18rem;
+		top: calc(40vh - 9.2rem);
 	}
 }
 
@@ -30,5 +57,26 @@
 	#play-click {
 		top: calc(56vh - 2.5rem);
 		font-size: 1.5rem;
+	}
+}
+
+@media screen and (min-width: 900px) and (min-height: 900px){
+	.score-container{
+		top: calc(22vh - 6.2rem);
+	}
+	.score-row{
+		font-size: 2rem;
+	}
+	.board-container{
+		width: 24rem;
+		height: 24rem;
+		top: calc(40vh - 13rem);
+	}
+	.board-square{
+		border-size: 4px;
+	}
+	#surrender-button{
+		
+		top: calc(45vh - 11rem);
 	}
 }
