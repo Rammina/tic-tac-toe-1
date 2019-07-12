@@ -149,13 +149,16 @@ const gameBoard = (() => {
 		// Check if filling this Single empty square with either icon wins the game or not
 		array[emptySquare] = "X";
 		if(lineFormed("X") === true) {
+			array[emptySquare] = "";
 			return false;
 					
 		}
 		array[emptySquare] = "O";
 		if(lineFormed("O") === true) {
+			array[emptySquare] = "";
 			return false;
 		}
+		array[emptySquare] = "";
 		return true;
 	};
 
@@ -349,11 +352,14 @@ const displayController = (() => {
 
 	surrenderElement.addEventListener("click", function(){
 		if((getPlayerTurnNumber()) % 2 === 0) {
-			info.getPlayer(1).surrender(getPlayerTurnNumber);			
-			console.log("layer 2 has already surrendered ");
+			info.getPlayer(1).surrender(getPlayerTurnNumber());	
+			console.log(getPlayerTurnNumber());		
+			console.log("Player 2 has already surrendered ");
 		}
 		else{
-			info.getPlayer(0).surrender();
+			info.getPlayer(0).surrender(getPlayerTurnNumber());
+			console.log(getPlayerTurnNumber());
+			console.log("Player 1 has already surrendered ");
 		}
 	});
 
@@ -392,9 +398,10 @@ const Player = (name) => {
 	const surrender = (turn) =>{
 		// Temporary placeholder
 		console.log(`${name} Has surrendered`);
-		if((turn % 2) === 0) {
+		if((turn % 2) !== 0) {
 			setTimeout(function () {
-
+				console.log("Player 2 earns a point");
+				console.log(turn);
 				info.getPlayer(1).earnPoint();
 			}, 750);
 			
@@ -402,7 +409,8 @@ const Player = (name) => {
 		}
 		else {
 			setTimeout(function () {
-
+				console.log("Player 1 earns a point");
+				console.log(turn);
 				info.getPlayer(0).earnPoint();	
 			}, 750);
 			
@@ -415,10 +423,10 @@ const Player = (name) => {
 		console.log("checking between earned point or not ");
 		displayController.endTurn();
 		if(gameBoard.isDead()) {
-			setTimeout(function () {
+			
 
 				displayController.endGame(null);
-			}, 750);
+			
 			
 
 		}

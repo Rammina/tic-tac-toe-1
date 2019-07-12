@@ -1,5 +1,5 @@
 html{
-	background-color: rgb(210, 240, 255);
+	background-image: linear-gradient(to bottom, #dcf4ff, #cbf9ff, #bffdf6, #beffe4, #ccffcc);
 }
 
 body{
@@ -16,7 +16,7 @@ main {
     min-width: 100%;
     min-height: 100vh;   
     /*background-color: #EEE9E3;*/
-    background-color: rgb(210, 240, 255);
+    /* background-color: rgb(210, 240, 255); */
     color: #3d2922;
 }
 
@@ -66,7 +66,6 @@ thead{
     /*display: none;*/
     display: block;
     /*position: fixed;*/
-
     width: (100% - 1rem);
     max-width: 33rem;
     /*margin: calc(50vh - 13.4rem) calc(50vw - 50%);*/
@@ -74,7 +73,7 @@ thead{
     margin: 0 auto;
     top: calc(42vh - 7.5rem);
     padding: 2rem 1rem;
-    background-color: rgb(210, 240, 255);
+    background-color: rgb(220, 244, 255);
     -webkit-box-shadow: 2px 3px 2px 0px #333;
     box-shadow: 2px 3px 2px 0px #333;     
     border: 1px solid #111;
@@ -168,7 +167,8 @@ thead{
 	display: block;
 	width: 85%;
 	max-width: 22rem;
-	margin: 1rem auto;
+    margin: 1rem auto;
+    font-size: 1.17rem;
 }
 
 .text-field {
@@ -211,19 +211,19 @@ thead{
 #intro-submit{
     display: block;
     width: 78%;
-    max-width: 14rem;
+    max-width: 10rem;
     height: 3rem;
     font-size: 1.3rem;
     font-family: 'Lato', sans-serif;
     margin: 2rem auto;
     /*background-color: #3d2922;*/
     /*not sure what color to use*/
-    background-color: #242;
+    background-color: rgba(34, 68, 34, 1);
     /*color: #EEE9E3;*/ 
     color: #eee;
     outline: none;
-    /*border: 2px solid #888;*/
-    border-radius: 5px;
+    /* border: 2px solid rgba(34, 68, 34, 1); */
+    border-radius: 10px;
 }
 
 #intro-submit:hover {
@@ -241,13 +241,24 @@ thead{
 
 #win-button-container{
 	display: flex;
-	justify-content: center;
+    justify-content: center;
 }
 
 #again-modal-button, #quit-modal-button {
 	margin: 0 1.5rem;
-	width: 4rem;
-	height: 3rem;
+	width: 5rem;
+    height: 3rem;
+    border: none;
+    font-size: 1.2rem;
+}
+
+#quit-modal-button {
+    border: 1px solid rgb(41, 41, 41);
+}
+
+#again-modal-button {
+    background-color: #353;
+    color: #eee;
 }
 
 /*main menu*/
@@ -416,17 +427,27 @@ thead{
 #surrender-button{
 	position: relative;
 	margin: 0 auto;
-	left: calc(50vw - 3.5rem);	
+	left: calc(50vw - 5rem);	
 	top: calc(45vh - 5rem);
 
 	/*margin-top: 3rem;*/
 	margin-bottom: 3rem;
-	width: 7rem;
+    width: 10rem;
 	height: 3rem;
     border: none;
-    background-color: #af1b1b;
+    background-color: #9e1818;
     color: white;
+    padding-left: 2.5rem;
+    font-size: 1.2rem;
+}
 
+#white-flag {
+    position: absolute;
+    left: 1.65rem;
+    top: 1rem;
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
 }
 
 @keyframes start-transparency {
