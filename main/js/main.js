@@ -186,6 +186,8 @@ const scoreBoard = (() => {
 	let playerOneScoreElement;
 	let playerTwoScoreElement;
 	let scoreBoardElement;
+	let drawScoreElement;
+	let activeIconElement;
 
 	const render = () => {
 		// Variable assignment for the elements
@@ -193,7 +195,10 @@ const scoreBoard = (() => {
 		playerTwoNameElement = document.getElementById("player-two-name");
 		playerOneScoreElement = document.getElementById("player-one-score");
 		playerTwoScoreElement = document.getElementById("player-two-score");
+		drawScoreElement = document.getElementById("draw-score");
+		activeIconElement = document.getElementById("active-icon");
 		scoreBoardElement = document.getElementById("score-section-container");
+
 
 		helper.showSection(scoreBoardElement);
 
@@ -214,11 +219,28 @@ const scoreBoard = (() => {
 		playerTwoScoreElement.innerText = playerTwoScore;
 	};
 
+	const updateDraws = (draws) => {
+		drawScoreElement.innerText = draws;
+	};
+
 	const restartScores = () => {
 		playerOneScore = 0;
 		playerOneScoreElement.innerText = playerOneScore;
 		playerTwoScore = 0;
 		playerTwoScoreElement.innerText = playerTwoScore;
+		updateDraws(0);
+	};
+	const activateIcon = (turn) => {
+		if(turn % 2 !== 0) {
+			activeIconElement.classList.remove("circle");
+			activeIconElement.classList.add("cross");
+
+		}
+		else if(turn % 2 === 0) {
+			activeIconElement.classList.remove("cross");
+			activeIconElement.classList.add("circle");
+
+		}
 	};
 
 	const show = () => {
@@ -229,7 +251,7 @@ const scoreBoard = (() => {
 		helper.hideSection(scoreBoardElement);
 	};
 
-	return {render, updateScores, restartScores, show, hide};
+	return {render, updateScores, updateDraws, restartScores, activateIcon, show, hide};
 })();
 
 // Gameboard to display on the Dom
@@ -239,6 +261,7 @@ const displayController = (() => {
 	let playerTurn = null;
 	let turn = 1;
 	let icon = "cross";
+	let draws = 0;
 	let squares = document.querySelectorAll(".board-square");
 	let surrenderElement = document.getElementById("surrender-button");
 
@@ -246,6 +269,8 @@ const displayController = (() => {
 	let turnHeader = document.getElementById("turn-modal-header");
 	let winModal = document.getElementById("win-backdrop");
 	let winHeader = document.getElementById("win-modal-header");
+	let surrenderModal = document.getElementById("surrender-backdrop");
+	let surrenderHeader = document.getElementById("surrender-modal-header");
 
 	const getTurnNumber = () => {
 		
@@ -262,6 +287,9 @@ const displayController = (() => {
 
 	const startTurn = () => {
 		// Display the modal or backdrop that states whose turn it is
+		
+		scoreBoard.activateIcon(getTurnNumber());
+
 		if(getPlayerTurnNumber() % 2 === 0) {
 			turnHeader.innerText = `${info.getPlayer(1).getName()}'s Turn`;
 			console.log(turnHeader.innerText);
@@ -325,7 +353,8 @@ const displayController = (() => {
 		console.log("endgame was called ");
 		if(winner === null) {
 			winHeader.innerText = `Draw! No one wins...`;
-
+			draws++;
+			scoreBoard.updateDraws(draws);
 		}
 		else{
 			winHeader.innerText = `${winner} Wins!`;
@@ -351,16 +380,11 @@ const displayController = (() => {
 	}
 
 	surrenderElement.addEventListener("click", function(){
-		if((getPlayerTurnNumber()) % 2 === 0) {
-			info.getPlayer(1).surrender(getPlayerTurnNumber());	
-			console.log(getPlayerTurnNumber());		
-			console.log("Player 2 has already surrendered ");
-		}
-		else{
-			info.getPlayer(0).surrender(getPlayerTurnNumber());
-			console.log(getPlayerTurnNumber());
-			console.log("Player 1 has already surrendered ");
-		}
+		helper.openModal(surrenderModal);
+
+		promptSurrender.setTarget((getPlayerTurnNumber()) % 2);
+	
+	
 	});
 
 
@@ -527,10 +551,11 @@ const promptNames = (() => {
 
 			}
 			else {
-				displayController.startGame();
 				scoreBoard.render();	
+				displayController.startGame();
+				
 				helper.showSection(document.getElementById("board-section"));
-				navigationBar.render();
+				// navigationBar.render();
 				done = false;
 			}
 
@@ -560,6 +585,36 @@ const promptPlayMore = (() => {
 	});
 
 	// helper.openModal(winModal);
+})();
+
+const promptSurrender = (() => {
+	let target = null;
+	let surrenderModal = document.getElementById("surrender-backdrop");
+	let surrenderHeader = document.getElementById("surrender-modal-header");
+	let surrenderButton = document.getElementById("surrender-modal-button");
+	let abortButton = document.getElementById("abort-modal-button");
+
+	const setTarget = (number) => {
+		target = number;
+	};
+
+	surrenderButton.addEventListener("click", function(){
+		if(target === 0) {
+			info.getPlayer(1).surrender(0);	
+		}
+		else{
+			info.getPlayer(0).surrender(1);
+		}
+		helper.closeModal(surrenderModal);
+
+	});
+
+	abortButton.addEventListener("click", function(){
+		// Stop playing games and show the main menu
+		helper.closeModal(surrenderModal);
+	});
+
+	return {setTarget};
 })();
 
 // This guarantees a reset before any future commands

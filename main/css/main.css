@@ -1,13 +1,19 @@
 html{
-	background-image: linear-gradient(to bottom, #dcf4ff, #cbf9ff, #bffdf6, #beffe4, #ccffcc);
+	
+    min-height: 28rem;   
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-image: linear-gradient(to bottom, #dcf4ff, #cbf9ff, #bffdf6, #beffe4, #ccffcc);
 }
 
 body{
     /*max-height: 100%;*/
 	min-height: 100vh;   
-	min-width: 100%; 
-	
-    /*overflow: hidden;*/
+	min-width: 100%;
+    padding: 0 !important;
+    margin: 0 !important;
+	/*overflow: hidden;*/
 } 
 
 main {
@@ -26,10 +32,6 @@ thead, tbody{
 }
 thead, tbody, tr, td{
 	margin: 0 auto;
-}
-
-thead{
-    font-family: 'Short Stack', cursive;
 }
 
 .section-container{
@@ -99,11 +101,15 @@ thead{
 	margin-bottom: 0;
 }
 
-#win-modal{
+#win-modal, #surrender-modal{
 	top: calc(50vh - 7.5rem);
 }
 
-#intro-modal, #turn-modal, #win-modal{
+#win-button-container, #surrender-button-container{
+    margin-top: 1rem;
+}
+
+#intro-modal, #turn-modal, #win-modal, #surrender-modal{
     /*transform: translateY(-1000px);*/
     transition: transform 0.5s ease-in-out;
 }
@@ -127,7 +133,7 @@ thead{
     padding: 0.9rem;
     /*margin-left: calc(95% - 2.7rem);*/
     /*margin-right: 0;*/
-    margin-top: -2.2rem;
+    /*margin-top: -2.2rem;*/
 }
 
 
@@ -150,7 +156,7 @@ thead{
 .modal-header {
     /*display: inline-block; */
     margin: 0 auto;
-    margin-bottom: 1.5rem;
+    /*margin-bottom: 1.5rem;*/
     text-align: center;
     font-size: 1.6rem;
     font-family: 'Short Stack', cursive;
@@ -159,7 +165,7 @@ thead{
 
 .modal-paragraph {
 	margin: 0 auto;
-	margin-bottom: 1.5rem;
+	margin-top: 1.5rem;
 	text-align: center;
 }
 
@@ -167,7 +173,8 @@ thead{
 	display: block;
 	width: 85%;
 	max-width: 22rem;
-    margin: 1rem auto;
+    margin: 0 auto;
+    margin-top: 1rem;
     font-size: 1.17rem;
 }
 
@@ -177,7 +184,9 @@ thead{
     width: 85%;
     max-width: 22rem;
     height: 2.8rem;
-    margin: 1rem auto;
+    margin: 0 auto;
+    margin-top: 1rem;
+
     border: solid 1px #888; 
     border-radius: 5px;
     padding-left: 0.6rem;
@@ -239,21 +248,31 @@ thead{
     box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
 }
 
-#win-button-container{
+#win-button-container, #surrender-button-container{
 	display: flex;
     justify-content: center;
 }
 
-#again-modal-button, #quit-modal-button {
+#again-modal-button, #quit-modal-button, #surrender-modal-button, #abort-modal-button {
 	margin: 0 1.5rem;
 	width: 5rem;
     height: 3rem;
     border: none;
     font-size: 1.2rem;
 }
+#again-modal-button:focus, #quit-modal-button:focus {
+    -webkit-box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
+    box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
+}
 
-#quit-modal-button {
+#quit-modal-button, #abort-modal-button {
+    color: #222;
     border: 1px solid rgb(41, 41, 41);
+}
+
+#quit-modal-button:hover, #abort-modal-button:hover {
+    color: #444;
+    border-color: #444;
 }
 
 #again-modal-button {
@@ -261,10 +280,25 @@ thead{
     color: #eee;
 }
 
+#surrender-modal-button {
+    background-color: #9e1818;
+    color: white;
+}
+
+#again-modal-button:hover {
+    background-color: #464;
+    color: #fff;
+}
+
+#surrender-modal-button:hover {
+    background-color: #ae2828;
+}
+
 /*main menu*/
 #main-menu{
 	display: none;
-	min-height: 100vh;
+	height: 100vh;
+    min-height: 28rem;   
 	min-width: 100%;
     background:-webkit-repeating-linear-gradient(90deg, rgb(255, 255, 255) 0px, rgb(255, 255, 255) 35px, rgb(224, 239, 241) 35.001px, rgb(224, 239, 241) 70px, rgb(223, 220, 239) 70.001px, rgb(223, 220, 239) 105px);
     background:-o-repeating-linear-gradient(90deg, rgb(255, 255, 255) 0px, rgb(255, 255, 255) 35px, rgb(224, 239, 241) 35.001px, rgb(224, 239, 241) 70px, rgb(223, 220, 239) 70.001px, rgb(223, 220, 239) 105px);
@@ -307,27 +341,95 @@ thead{
 #score-section-container.show{
 	display: block;
 }
-
+.score-flex{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    flex-wrap: wrap;
+    background-color: rgba(43, 40, 50, 1);
+    top: calc(20vh - 3.5rem);
+    border-radius: 15px;
+    min-width: 18.75rem;
+    width: 90%;
+    max-width: 27rem;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
 .score-container{
 	position: relative;
-	top: calc(20vh - 3.0rem);
-	margin: 0 auto;
+	/*top: calc(20vh - 3.0rem);*/
+	margin: 0;
+    margin-right: 1rem;
+    border-spacing: 0px;
+    border: 1px solid rgba(203, 250, 200, 0.5);
+    border-radius: 3px;
+    /*background-color: rgba(43, 40, 50, 1);*/
+
 }
 
 .score-row{
-	text-align: center;
+	
 	margin: 0 auto;
 	width: 100%;
 	/*border: 1px solid black;*/
-	font-size: 1.1rem;
-    color: rgba(53, 50, 60, 1);
+	font-size: 1rem;
+    color: #cfc;
 }
 .score-cell{
-	text-align: center;
-	width: calc(45vw);
-    max-width: 25rem;
+    text-align: right;
+    display: table-cell;
+	/*text-align: center;*/
+	/*width: calc(45vw);*/
+    min-width: 2.5rem;
+    border: 1px solid rgba(203, 250, 200, 0.5);
+
+    margin: 0;
+    padding: 0.1rem;
+    border-spacing: 0px;
+}
+.score-first-column{
+    text-align: left;
+    font-family: 'Short Stack', cursive;
 }
 
+#player-one-name{
+    /*border-bottom: 2px solid black;*/
+}
+
+.active-player-container{
+    position: relative;
+    /*top: calc(20vh - 3.0rem);*/
+    color: #cfc;
+    margin: 0;
+    margin-left: 1rem;
+    /*background-color: rgba(43, 40, 50, 1);*/
+}
+
+.active-header{
+    font-size: 1.05rem;
+}
+
+#active-icon{
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid rgba(203, 250, 200, 0.5);
+
+    margin: 0 auto;
+    margin-top: 0.4rem;
+}
+
+#active-icon.cross {
+    /* <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */
+    background: url(../images/x-icon.png);
+    background-size: cover;
+}
+
+#active-icon.circle {
+    /* <div>Icons made by <a href="https://www.flaticon.com/authors/balraj-chana" title="Balraj Chana">Balraj Chana</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> */
+    background: url(../images/circle-icon.png);
+    background-size: cover;
+}
 /*Board CSS*/
 #board-section{
 	display: none;
@@ -345,7 +447,7 @@ thead{
     flex-wrap: wrap;
 	position: relative;
 	margin: 0 auto;
-	top: calc(40vh - 6.2rem);
+	top: calc(40vh - 7rem);
 	width: 13.3rem;
     /*max-width: 24rem;*/
     height: 12.75rem;
@@ -428,10 +530,10 @@ thead{
 	position: relative;
 	margin: 0 auto;
 	left: calc(50vw - 5rem);	
-	top: calc(45vh - 5rem);
+	top: calc(45vh - 6rem);
 
 	/*margin-top: 3rem;*/
-	margin-bottom: 3rem;
+	/*margin-bottom: 3rem;*/
     width: 10rem;
 	height: 3rem;
     border: none;
@@ -439,6 +541,15 @@ thead{
     color: white;
     padding-left: 2.5rem;
     font-size: 1.2rem;
+}
+
+#surrender-button:hover{
+    background-color: #ae2828;
+}
+
+#surrender-button:focus{
+    -webkit-box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
+    box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
 }
 
 #white-flag {

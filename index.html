@@ -51,6 +51,19 @@
             </section>
     </div>
 
+    <div class="backdrop" id="surrender-backdrop">
+            <section class="modal-container" id="surrender-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <h1 id="surrender-modal-header" class="modal-header">Surrender</h1>
+
+                <p class="modal-paragraph">Would you like to give up on this round?</p>
+                
+                <div id="surrender-button-container">
+                    <button class="modal-button" id="abort-modal-button">No</button>
+                    <button class="modal-button" id="surrender-modal-button">Yes</button>
+                </div>
+            </section>
+    </div>
+
     <header class="main-header" id="main-page-header">
         <nav class="main-nav">
 
@@ -66,21 +79,33 @@
             <button id="play-click"> Click to play</button>
         </section>
         <section class="section-container" id="score-section-container">
-            
+        <div class="score-flex">
             <table class="score-container">
                 <!-- <h1>Scoreboard</h1> -->
                 <thead>
                     <tr class="score-row">
-                        <td class="score-cell" id="player-one-name">Player 1</td>
-                        <td class="score-cell" id="player-two-name">Player 2</td>
+                        <td class="score-cell score-first-column" id="player-one-name">Player 1</td>
+                        <td class="score-cell" id="player-one-score">0</td>    
                     </tr>
                 </thead>
                     
                 <tr class="score-row">
-                    <td class="score-cell" id="player-one-score">0</td>
+                    
+                    <td class="score-cell score-first-column" id="player-two-name">Player 2</td>
                     <td class="score-cell" id="player-two-score">0</td>
                 </tr>
+
+                <tr class="score-row">
+                    
+                    <td class="score-cell score-first-column" id="draw-name">Draws</td>
+                    <td class="score-cell" id="draw-score">0</td>
+                </tr>
             </table>
+            <div class="active-player-container">
+                <h3 class="active-header">Active:</h3>
+                <div id="active-icon"></div>
+            </div>
+        </div>
         </section>
 
         <section class="section-container" id="board-section">

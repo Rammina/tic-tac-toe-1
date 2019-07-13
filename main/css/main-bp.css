@@ -1,5 +1,9 @@
 
 @media screen and (min-width: 450px) and (min-height: 450px){
+	html{
+		min-height: 33rem;
+	}
+
 	main{
 		/*padding-top: 3.5rem;*/
 
@@ -7,6 +11,7 @@
 	#main-menu{
 		/*position: absolute;*/
 		/*bottom: 3.5rem;*/
+		min-height: 33rem;
 	}
 	.menu-header {
 		top: calc(45vh - 2.85rem);
@@ -19,32 +24,51 @@
 	#score-section-container{
 		top: 0rem;
 	}
-	.score-row{
-		font-size: 1.5rem;
+	.score-flex{
+		padding: 1rem;
+		top: calc(20vh - 4.5rem);
+	}
+	.score-row, .active-header{
+		font-size: 1.3rem;
+	}
+	.score-cell{
+		padding: 0.2rem;
+		min-width: 3rem;
+	}
+	#active-icon{
+		width: 4.2rem;
+		height: 4.2rem;
 	}
 	.board-container{
 		width: 15rem;
 		height: 15rem;
-		top: calc(40vh - 8.2rem);
+		top: calc(40vh - 9.2rem);
 	}
 	#surrender-button{
 
-		top: calc(45vh - 8rem);
+		top: calc(45vh - 9rem);
 	}
 }
 
 
 @media screen and (min-width: 600px) and (min-height: 600px){
-	.score-container{
-		top: calc(20vh - 4.2rem);
+	.score-container, .active-player-container{
+		/*top: calc(20vh - 4.2rem);*/
 	}
-	.score-row{
-		font-size: 1.7rem;
+	.score-row, .active-header{
+		font-size: 1.5rem;
+	}
+	#active-icon{
+		width: 4.6rem;
+		height: 4.6rem;
 	}
 	.board-container{
 		width: 18rem;
 		height: 18rem;
 		top: calc(40vh - 9.2rem);
+	}
+	html, #main-menu{
+		min-height: 42rem;
 	}
 }
 
@@ -61,22 +85,22 @@
 }
 
 @media screen and (min-width: 900px) and (min-height: 900px){
-	.score-container{
-		top: calc(22vh - 6.2rem);
+	.score-container, .active-player-container{
+		/*top: calc(22vh - 6.2rem);*/
 	}
 	.score-row{
-		font-size: 2rem;
+		/*font-size: 2rem;*/
 	}
 	.board-container{
 		width: 24rem;
 		height: 24rem;
-		top: calc(40vh - 13rem);
+		top: calc(40vh - 12.5rem);
 	}
 	.board-square{
 		border-size: 4px;
 	}
 	#surrender-button{
 		
-		top: calc(45vh - 11rem);
+		top: calc(45vh - 12rem);
 	}
 }
