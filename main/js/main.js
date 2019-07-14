@@ -1,7 +1,15 @@
 // Helper functions
 const helper = (() => {
+	let trapped = null;
+	const trap = () => {
+		
+		trapped = document.activeElement;
+	}
+	const retrieveTrap = () => {
+		return trapped;
+	};
 	const openModal = (modal) => {
-
+		trap();
 		modal.classList.add("show");
 		modal.firstElementChild.classList.add("show");
 		modal.setAttribute("aria-hidden", "false");
@@ -13,6 +21,7 @@ const helper = (() => {
 		modal.classList.remove("show");
 		modal.firstElementChild.classList.remove("show");
 		modal.setAttribute("aria-hidden", "true");
+		retrieveTrap().focus();
 	}
 	const showSection = (section) => {
 
@@ -21,7 +30,6 @@ const helper = (() => {
 	const hideSection = (section) => {
 		section.classList.remove("show");
 	}
-
 
 	return {openModal, closeModal, showSection, hideSection};
 })();
@@ -459,9 +467,11 @@ const Player = (name) => {
 
 const mainMenu = (() => {
 	let menuScreen;
+	let menuButton;
 
 	const render = () => {
 		menuScreen = document.getElementById("main-menu");
+		menuButton = document.getElementById("play-click");
 		helper.showSection(menuScreen);
 		menuScreen.addEventListener("click", function(){
 			helper.hideSection(menuScreen);
@@ -474,7 +484,7 @@ const mainMenu = (() => {
 		gameBoard.hide();
 		scoreBoard.hide();
 		helper.showSection(menuScreen);
-
+		menuButton.focus();
 	};
 
 	return {render, show};
@@ -638,6 +648,9 @@ const promptPlayMore = (() => {
 	let winHeader = document.getElementById("win-modal-header");
 	let againButton = document.getElementById("again-modal-button");
 	let quitButton = document.getElementById("quit-modal-button");
+	let winTabbables = document.querySelectorAll("button");
+
+
 
 	againButton.addEventListener("click", function(){
 		displayController.startGame();
@@ -645,12 +658,54 @@ const promptPlayMore = (() => {
 
 	});
 
-	quitButton.addEventListener("click", function(){
+	function quitGame() {
+
 		// Stop playing games and show the main menu
 		helper.closeModal(winModal);
 		info.resetPlayers();
 		mainMenu.show();
+	};
+
+	winModal.addEventListener("keydown", function(event){
+		if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
+			event.preventDefault();
+			quitGame();
+		}		
 	});
+
+	quitButton.addEventListener("click", function(){
+		quitGame();
+	});
+
+	for(let i = 0; i < winTabbables.length; i++){
+			winTabbables[i].addEventListener("keydown", function(event){
+				
+				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+					event.preventDefault();
+					let previous = i - 1;
+
+					if(previous < 0) {
+						winTabbables[winTabbables.length - 1].focus();
+
+					}
+					else{
+						winTabbables[previous].focus();
+					}
+				}
+				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+					event.preventDefault();	
+					let next = i + 1;
+
+					if(next === winTabbables.length) {
+						winTabbables[0].focus();
+
+					}
+					else{
+						winTabbables[next].focus();
+					}
+				}
+			});	
+		}
 
 	// helper.openModal(winModal);
 })();
@@ -662,9 +717,18 @@ const promptSurrender = (() => {
 	let surrenderButton = document.getElementById("surrender-modal-button");
 	let abortButton = document.getElementById("abort-modal-button");
 
+	let surrenderTabbables = document.querySelectorAll("button");
+
 	const setTarget = (number) => {
 		target = number;
 	};
+
+	surrenderModal.addEventListener("keydown", function(event){
+		if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
+			event.preventDefault();
+			helper.closeModal(surrenderModal);
+		}		
+	});
 
 	surrenderButton.addEventListener("click", function(){
 		if(target === 0) {
@@ -681,6 +745,36 @@ const promptSurrender = (() => {
 		// Stop playing games and show the main menu
 		helper.closeModal(surrenderModal);
 	});
+
+	for(let i = 0; i < surrenderTabbables.length; i++){
+			surrenderTabbables[i].addEventListener("keydown", function(event){
+				
+				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+					event.preventDefault();
+					let previous = i - 1;
+
+					if(previous < 0) {
+						surrenderTabbables[surrenderTabbables.length - 1].focus();
+
+					}
+					else{
+						surrenderTabbables[previous].focus();
+					}
+				}
+				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+					event.preventDefault();	
+					let next = i + 1;
+
+					if(next === surrenderTabbables.length) {
+						surrenderTabbables[0].focus();
+
+					}
+					else{
+						surrenderTabbables[next].focus();
+					}
+				}
+			});	
+	}
 
 	return {setTarget};
 })();
