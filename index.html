@@ -32,6 +32,21 @@
             </section>
     </div>
 
+    <div class="backdrop" id="name-confirm-backdrop">
+            <section class="modal-container" id="name-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <h1 id="name-confirm-modal-header" class="modal-header">Player 1's Name</h1>
+
+                <p class="modal-paragraph">Your name is: </p>
+                <h2 class="modal-header" id="player-name">Your name</h2>
+                <p class="modal-paragraph">Would you like to use this name?</p>
+                
+                <div class="modal-button-container" id="name-confirm-button-container">
+                    <button class="modal-button" id="no-modal-button">No</button>
+                    <button class="modal-button" id="yes-modal-button">Yes</button>
+                </div>
+            </section>
+    </div>
+
     <div class="backdrop" id="turn-backdrop">
             <section class="modal-container" id="turn-modal" tabindex="-1" role="dialog" aria-hidden="true">
                 <h1 id="turn-modal-header" class="modal-header">Player 1's Turn</h1>
@@ -44,9 +59,9 @@
 
                 <p class="modal-paragraph">Would you like to play another game?</p>
                 
-                <div id="win-button-container">
+                <div class="modal-button-container" id="win-button-container">
                     <button class="modal-button" id="quit-modal-button">No</button>
-                    <button class="modal-button" id="again-modal-button">Yes</button>
+                    <button class="modal-button" id="again-modal-button">Play More</button>
                 </div>
             </section>
     </div>
@@ -57,9 +72,9 @@
 
                 <p class="modal-paragraph">Would you like to give up on this round?</p>
                 
-                <div id="surrender-button-container">
+                <div class="modal-button-container" id="surrender-button-container">
                     <button class="modal-button" id="abort-modal-button">No</button>
-                    <button class="modal-button" id="surrender-modal-button">Yes</button>
+                    <button class="modal-button" id="surrender-modal-button">Forfeit</button>
                 </div>
             </section>
     </div>

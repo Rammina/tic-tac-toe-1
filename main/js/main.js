@@ -1,9 +1,13 @@
 // Helper functions
 const helper = (() => {
 	const openModal = (modal) => {
+
 		modal.classList.add("show");
 		modal.firstElementChild.classList.add("show");
 		modal.setAttribute("aria-hidden", "false");
+		setTimeout(function(){
+			modal.firstElementChild.focus();
+		}, 155);
 	}
 	const closeModal = (modal) => {
 		modal.classList.remove("show");
@@ -22,26 +26,6 @@ const helper = (() => {
 	return {openModal, closeModal, showSection, hideSection};
 })();
 
-// Navigation bar
-const navigationBar = (() => {
-	let header;
-	const render = () => {
-		header = document.getElementById("main-page-header");
-		helper.showSection(header);
-	};
-
-	const show = () => {
-
-		helper.showSection(header);
-	}
-
-	const hide = () => {
-
-		helper.hideSection(header);
-	};
-
-	return {render, show, hide};
-})();
 
 // Players storage
 const info = (() => {
@@ -359,7 +343,7 @@ const displayController = (() => {
 		else{
 			winHeader.innerText = `${winner} Wins!`;
 		}
-		
+
 		helper.openModal(winModal);
 
 	}
@@ -447,18 +431,15 @@ const Player = (name) => {
 		console.log("checking between earned point or not ");
 		displayController.endTurn();
 		if(gameBoard.isDead()) {
-			
-
+			setTimeout(function(){
 				displayController.endGame(null);
-			
-			
-
+			}, 2000)
 		}
 		else if(gameBoard.lineFormed(icon)) {
 			setTimeout(function () {
 
 				earnPoint();
-			}, 750);
+			}, 2000);
 			
 
 		}
@@ -504,15 +485,26 @@ const promptNames = (() => {
            let content = document.createElement("div");
 	};
 		let introModal = document.getElementById("intro-backdrop");
+		let introContent = document.getElementById("intro-modal");
 		let introHeader = document.getElementById("intro-modal-header");
 		let nameField = document.getElementById("player-name-field");
 		let submitButton = document.getElementById("intro-submit");
+		
+		let nameConfirmModal = document.getElementById("name-confirm-backdrop");
+		let nameConfirmHeader = document.getElementById("name-confirm-modal-header");
+		let playerName = document.getElementById("player-name");
+		let yesButton = document.getElementById("yes-modal-button");
+		let noButton = document.getElementById("no-modal-button");
+		
+		let introTabbables = introModal.querySelectorAll("input, button");
+		let nameConfirmTabbables = nameConfirmModal.querySelectorAll("button");
 		let playerNumber = 1;
 		let done = false;
 		let namePlaceHolder = [];
 
 		const openIntro = () => {
 			helper.openModal(introModal);
+			
 		};
 
 		function submitIntro() {
@@ -543,7 +535,30 @@ const promptNames = (() => {
 		
 		submitButton.addEventListener("click", function(event){
 			event.preventDefault();
+			nameConfirmHeader.innerText = `Player ${playerNumber}'s Name`;
+			if(nameField.value === ""){
+				playerName.innerText = `Anonymous ${playerNumber}`;
+			}
+			else{
+				playerName.innerText = `${nameField.value}`;
+			}
+			helper.openModal(nameConfirmModal);
+			nameConfirmModal.focus();			
+
+		}); 
+		nameConfirmModal.addEventListener("keydown", function(event){
+			if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
+				event.preventDefault();
+				helper.closeModal(nameConfirmModal);
+			}
+		});
+		noButton.addEventListener("click", function(event){
+			helper.closeModal(nameConfirmModal);
+		});
+
+		yesButton.addEventListener("click", function(event){
 			submitIntro();
+			helper.closeModal(nameConfirmModal);
 			helper.closeModal(introModal);
 			nextPlayer();
 			if(done === false) {
@@ -555,12 +570,66 @@ const promptNames = (() => {
 				displayController.startGame();
 				
 				helper.showSection(document.getElementById("board-section"));
-				// navigationBar.render();
 				done = false;
 			}
+		});
+		for(let i = 0; i < introTabbables.length; i++){
+			introTabbables[i].addEventListener("keydown", function(event){
+				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+					event.preventDefault();
+					let previous = i - 1;
 
-		}); 
+					if(previous < 0) {
+						introTabbables[introTabbables.length - 1].focus();
 
+					}
+					else{
+						introTabbables[previous].focus();
+					}
+				}
+				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+					event.preventDefault();	
+					let next = i + 1;
+
+					if(next === introTabbables.length) {
+						introTabbables[0].focus();
+
+					}
+					else{
+						introTabbables[next].focus();
+					}
+				}
+			});	
+		}
+		for(let i = 0; i < nameConfirmTabbables.length; i++){
+			nameConfirmTabbables[i].addEventListener("keydown", function(event){
+				
+				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+					event.preventDefault();
+					let previous = i - 1;
+
+					if(previous < 0) {
+						nameConfirmTabbables[nameConfirmTabbables.length - 1].focus();
+
+					}
+					else{
+						nameConfirmTabbables[previous].focus();
+					}
+				}
+				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+					event.preventDefault();	
+					let next = i + 1;
+
+					if(next === nameConfirmTabbables.length) {
+						nameConfirmTabbables[0].focus();
+
+					}
+					else{
+						nameConfirmTabbables[next].focus();
+					}
+				}
+			});	
+		}
 	return {openIntro};
 })();
 
@@ -579,7 +648,6 @@ const promptPlayMore = (() => {
 	quitButton.addEventListener("click", function(){
 		// Stop playing games and show the main menu
 		helper.closeModal(winModal);
-		navigationBar.hide();
 		info.resetPlayers();
 		mainMenu.show();
 	});

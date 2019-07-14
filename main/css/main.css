@@ -166,7 +166,8 @@ thead, tbody, tr, td{
 .modal-paragraph {
 	margin: 0 auto;
 	margin-top: 1.5rem;
-	text-align: center;
+    text-align: center;
+    font-size: 1.15rem;
 }
 
 #player-name-label{
@@ -248,12 +249,24 @@ thead, tbody, tr, td{
     box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
 }
 
-#win-button-container, #surrender-button-container{
-	display: flex;
-    justify-content: center;
+#name-confirm-modal-header {
+    text-transform: uppercase;
 }
 
-#again-modal-button, #quit-modal-button, #surrender-modal-button, #abort-modal-button {
+#player-name {
+    margin-top: 0.45rem;
+    font-size: 1.4rem;
+    color: #333;
+    font-style: italic;
+}
+
+.modal-button-container{
+	display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.modal-button{
 	margin: 0 1.5rem;
 	width: 5rem;
     height: 3rem;
@@ -265,27 +278,34 @@ thead, tbody, tr, td{
     box-shadow: 0px 0px 0.5px 1px #FFFFFF, 0px 0px 1px 2px #969696, 0px 0px 2px 3px #000000; 
 }
 
-#quit-modal-button, #abort-modal-button {
+#quit-modal-button, #abort-modal-button, #no-modal-button {
     color: #222;
     border: 1px solid rgb(41, 41, 41);
 }
 
-#quit-modal-button:hover, #abort-modal-button:hover {
+#quit-modal-button:hover, #abort-modal-button:hover, #no-modal-button:hover {
     color: #444;
     border-color: #444;
+}
+
+#yes-modal-button {
+    background-color: #353;
+    color: #eee;
 }
 
 #again-modal-button {
     background-color: #353;
     color: #eee;
+    width: 8rem;
 }
 
 #surrender-modal-button {
     background-color: #9e1818;
     color: white;
+    width: 6.5rem;
 }
 
-#again-modal-button:hover {
+#again-modal-button:hover, #yes-modal-button:hover {
     background-color: #464;
     color: #fff;
 }
