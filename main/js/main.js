@@ -57,6 +57,7 @@ const info = (() => {
 
 const gameBoard = (() => {
 	let array = ["", "", "", "", "", "", "", "", ""];
+	let winningSquares = [];
 	let board = document.getElementById("board-section");
 	let squares = document.querySelectorAll(".board-square");
 	const disableButton = (position) => {
@@ -79,36 +80,45 @@ const gameBoard = (() => {
 		console.log("empty squares was called ");
 	}
 	const lineFormed = (icon) => {
+		winningBlocks = [];
 		if(array[0] === icon && array[1] === icon && array[2] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [0, 1, 2];
 			return true;
 		}
 		else if(array[3] === icon && array[4] === icon && array[5] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [3, 4, 5];
 			return true;
 		}
 		else if(array[6] === icon && array[7] === icon && array[8] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [6, 7, 8];
 			return true;
 		}
 		else if(array[0] === icon && array[3] === icon && array[6] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [0, 3, 6];
 			return true;
 		}
 		else if(array[1] === icon && array[4] === icon && array[7] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [1, 4, 7];
 			return true;
 		}
 		else if(array[2] === icon && array[5] === icon && array[8] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [2, 5, 8];
 			return true;
 		}
 		else if(array[0] === icon && array[4] === icon && array[8] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [0, 4, 8];
 			return true;
 		}
 		else if(array[2] === icon && array[4] === icon && array[6] === icon) {
 			console.log("Line form return true;");
+			winningBlocks = [2, 4, 6];
 			return true;
 		}
 		console.log("Line form return false;");
@@ -154,6 +164,12 @@ const gameBoard = (() => {
 		return true;
 	};
 
+	const highlightWinningBlocks = () =>{
+		for(let i = 0; i < winningBlocks.length; i++){
+			squares[winningBlocks[i]].classList.add("highlight");
+		}
+	}
+
 	const render = () =>{
 		// I'm not sure yet
 	}
@@ -166,7 +182,7 @@ const gameBoard = (() => {
 		helper.hideSection(board);
 	};
 
-	return {disableButton, enableButton, fillSquare, emptySquares, lineFormed, isDead, show, hide};
+	return {disableButton, enableButton, fillSquare, emptySquares, lineFormed, isDead, show, hide, highlightWinningBlocks};
 })();
 
 const scoreBoard = (() => {
@@ -321,6 +337,7 @@ const displayController = (() => {
 		for(let i = 0; i < squares.length; i++) {
 			squares[i].classList.remove("cross");
 			squares[i].classList.remove("circle");
+			squares[i].classList.remove("highlight");
 			gameBoard.enableButton(i);
 		}
 		gameBoard.emptySquares();
@@ -444,6 +461,9 @@ const Player = (name) => {
 			}, 2000)
 		}
 		else if(gameBoard.lineFormed(icon)) {
+			setTimeout(function(){
+				gameBoard.highlightWinningBlocks();
+			}, 100)
 			setTimeout(function () {
 
 				earnPoint();
