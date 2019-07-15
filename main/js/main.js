@@ -648,7 +648,7 @@ const promptPlayMore = (() => {
 	let winHeader = document.getElementById("win-modal-header");
 	let againButton = document.getElementById("again-modal-button");
 	let quitButton = document.getElementById("quit-modal-button");
-	let winTabbables = document.querySelectorAll("button");
+	let winTabbables = winModal.querySelectorAll("button");
 
 
 
@@ -717,7 +717,7 @@ const promptSurrender = (() => {
 	let surrenderButton = document.getElementById("surrender-modal-button");
 	let abortButton = document.getElementById("abort-modal-button");
 
-	let surrenderTabbables = document.querySelectorAll("button");
+	let surrenderTabbables = surrenderModal.querySelectorAll("button");
 
 	const setTarget = (number) => {
 		target = number;
@@ -748,7 +748,7 @@ const promptSurrender = (() => {
 
 	for(let i = 0; i < surrenderTabbables.length; i++){
 			surrenderTabbables[i].addEventListener("keydown", function(event){
-				
+
 				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
 					event.preventDefault();
 					let previous = i - 1;
@@ -766,6 +766,7 @@ const promptSurrender = (() => {
 					let next = i + 1;
 
 					if(next === surrenderTabbables.length) {
+
 						surrenderTabbables[0].focus();
 
 					}
