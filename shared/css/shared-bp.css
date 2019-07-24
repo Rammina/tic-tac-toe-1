@@ -1,8 +1,34 @@
 /* Width breakpoints */
-
 @media screen and (min-width: 700px) {
 	main {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+	#add-book{
+		position: relative;
+		top: 0;
+		margin-left: 0;
+		margin-right: 0.8rem;
+		border-radius: 5px;
+		background-color: #d0f5cd;
+		color: #3d2922;
+		width: 10rem;
+		font-size: 1.3rem;
+		font-family: 'Roboto', serif;
+	}
 
+	#add-book:hover {
+		text-shadow: 0 0 0.3px #111;
+		background-color: #c0f0c5;
+	}
+
+	#add-book::after {
+		content: "Add New Book";
+
+	}
+
+	.plus-svg, .plus-png {
+		display: none;
 	}
 }
 
@@ -10,12 +36,8 @@
 	.nav__title{
 		margin-left: calc(45vw - 28rem);
 	}
-}
-
-/*Width and height breakpoints*/
-
-@media screen and (min-width: 450px) and (min-height: 450px){
-	.main-header.show{
-		/*display: block;*/
+	
+	#add-book {
+    	margin-right: calc(45vw - 27rem);
 	}
 }

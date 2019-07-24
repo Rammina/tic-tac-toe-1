@@ -7,7 +7,7 @@
     <meta name="viewport" content="height=device-height,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable, maximum-scale=2.0, minimum-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>The Book List</title>
     <link rel="stylesheet" type="text/css" href="shared/css/shared.css">
     <link rel="stylesheet" type="text/css" href="shared/css/shared-bp.css">
     <link rel="stylesheet" type="text/css" href="main/css/main.css">
@@ -20,151 +20,181 @@
             
             <div class="loader__text">
             
-                <!-- <p class="loader__p">Loading..</p> -->
-                <div class="loader-board-container">
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-                    <button class="loader-board-square" disabled="disabled"></button>
-
-                </div>
+            
+                <p class="loader__p">Organizing Books</p>
+                <!-- Loading Screen by: https://loading.io/spinner/bars/-progress-bar-facebook-loader -->
+                <div class="lds-css ng-scope"><div style="width:100%;height:100%" class="lds-bars"><div></div><div></div><div></div><div></div></div><style type="text/css">@keyframes lds-bars {
+                    0% {
+                      opacity: 1;
+                    }
+                    50% {
+                      opacity: 0.5;
+                    }
+                    100% {
+                      opacity: 1;
+                    }
+                  }
+                  @-webkit-keyframes lds-bars {
+                    0% {
+                      opacity: 1;
+                    }
+                    50% {
+                      opacity: 0.5;
+                    }
+                    100% {
+                      opacity: 1;
+                    }
+                  }
+                  .lds-bars {
+                    position: relative;
+                    bottom: 3.5rem;
+                    /* left: 11%; */
+                    margin: 0 auto;
+                    left: 0.3rem;
+                  }
+                  .lds-bars div {
+                    border: 1px solid #333;
+                    position: absolute;
+                    width: 23px;
+                    height: 68px;
+                    top: 60px;
+                    -webkit-animation: lds-bars 2.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                    animation: lds-bars 2.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                  }
+                  .lds-bars div:nth-child(1) {
+                    left: 25px;
+                    background: #1d0e0b;
+                    -webkit-animation-delay: -1.5s;
+                    animation-delay: -1.5s;
+                  }
+                  .lds-bars div:nth-child(2) {
+                    left: 65px;
+                    background: #774023;
+                    -webkit-animation-delay: -1s;
+                    animation-delay: -1s;
+                  }
+                  .lds-bars div:nth-child(3) {
+                    left: 105px;
+                    background: #d88c51;
+                    -webkit-animation-delay: -0.5s;
+                    animation-delay: -0.5s;
+                  }
+                  .lds-bars div:nth-child(4) {
+                    left: 145px;
+                    background: #f3e7c9;
+                  }
+                  .lds-bars {
+                    width: 200px !important;
+                    height: 200px !important;
+                    -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+                    transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+                  }
+                  </style></div>
             </div>
         </div>
     </div>
 
-    <div class="backdrop" id="intro-backdrop">
-            <section class="modal-container" id="intro-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <header class="main-header">
+        <nav class="main-nav">
+
+            <a class="nav__title" href="#"><img class="nav__title-img" src="main/images/book-title.png" alt="The Book List"></a>
+            <button class="button" id="add-book">
+                <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+                <svg width="80" height="80" class="plus-svg">
+                    <image class="plus-image" href="https://image.flaticon.com/icons/svg/70/70421.svg" src="main/images/plus.svg" width="90" height="90" alt="Plus Sign"/>
+                </svg>
+                <img class="hide-png no-display svg-fallback plus-png" src="main/images/plus.png" alt="Plus Sign">
+                <!-- Add New Book  -->
+            </button>
+        </nav>
+    </header>
+    <main class="main-content">
+
+
+
+        <section class="section-container">
+            
+            <table class="books-list-container" id="books-list-1">
+                <thead class="books-row books-header">
+                    <tr class="books-row books-header">
+                        <td class="books-number-header">#</td>
+                        <td class="books-title-header">Title</td>
+                        <td class="books-author-header">Author</td>
+                        <td class="books-pages-header">Pages</td>
+                        <td class="books-read-header">Read</td>
+                        <td class="books-delete-header">Delete</td>
+                    </tr>
+                </thead>
+                <tbody class="books-list-body">
                 
-                <h1 id="intro-modal-header" class="modal-header">Player 1's Name</h1>
-                
-                <form id="modal-form">
-                    <label class="form-label" id="player-name-label" for="player-name-field">Please input your name:</label>
+                </tbody>
+            </table>
+            
+
+        </section>
+
+        <div class="backdrop" id="add-backdrop">
+            <section class="modal-container" id="add-content" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal__close" id="add-close" tabindex="-1">
+                    <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/silviu-runceanu" title="Silviu Runceanu">Silviu Runceanu</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+                        <image href="https://image.flaticon.com/icons/svg/53/53804.svg" src="main/images/close.svg" width="90" height="90" alt="Close Button"/>
+                    </svg>
+                    <img class="hide-png no-display svg-fallback modal__close-png" src="main/images/close.png" alt="Close Button">
+                </div>
+                <h1 class="modal-header">Add a Book</h1>
+                <form id="book-form">
                     <div>
-                        <input id="player-name-field" class="text-field" type="text" name="title" placeholder="Anonymous" required="true" maxlength="10">
+                        <input id="book-title-field" class="text-field" type="text" name="title" placeholder="Book Title" required="true">
                     </div>
-                    <input type="submit" class="form-submit" id="intro-submit" value="Submit Name">
+                    <div>
+                        <input id="book-author-field" class="text-field" type="text" name="author" placeholder="Book Author" required="true">
+                    </div>
+                    <div>
+                        <input id="book-pages-field" class="text-field" type="number" name="pages" placeholder="Pages">
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input class="form-checkbox" type="checkbox" name="read-checkbox" id="read-checkbox">
+                        <label class="form-label" for="read-checkbox">Read</label>
+                        
+                    </div>
+                    <input type="submit" class="form-submit" id="book-submit" value="Add This Book">
                 </form>
             
             </section>
-    </div>
-
-    <div class="backdrop" id="name-confirm-backdrop">
-            <section class="modal-container" id="name-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <h1 id="name-confirm-modal-header" class="modal-header">Player 1's Name</h1>
-
-                <p class="modal-paragraph">Your name is: </p>
-                <h2 class="modal-header" id="player-name">Your name</h2>
-                <p class="modal-paragraph">Would you like to use this name?</p>
-                
-                <div class="modal-button-container" id="name-confirm-button-container">
-                    <button class="modal-button" id="no-modal-button">No</button>
-                    <button class="modal-button" id="yes-modal-button">Yes</button>
-                </div>
-            </section>
-    </div>
-
-    <div class="backdrop" id="turn-backdrop">
-            <section class="modal-container" id="turn-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <h1 id="turn-modal-header" class="modal-header">Player 1's Turn</h1>
-            </section>
-    </div>
-
-    <div class="backdrop" id="win-backdrop">
-            <section class="modal-container" id="win-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <h1 id="win-modal-header" class="modal-header">Player 1 Wins!</h1>
-
-                <p class="modal-paragraph">Would you like to play another game?</p>
-                
-                <div class="modal-button-container" id="win-button-container">
-                    <button class="modal-button" id="quit-modal-button">No</button>
-                    <button class="modal-button" id="again-modal-button">Play More</button>
-                </div>
-            </section>
-    </div>
-
-    <div class="backdrop" id="surrender-backdrop">
-            <section class="modal-container" id="surrender-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <h1 id="surrender-modal-header" class="modal-header">Surrender</h1>
-
-                <p class="modal-paragraph">Would you like to give up on this round?</p>
-                
-                <div class="modal-button-container" id="surrender-button-container">
-                    <button class="modal-button" id="abort-modal-button">No</button>
-                    <button class="modal-button" id="surrender-modal-button">Forfeit</button>
-                </div>
-            </section>
-    </div>
-
-    <header class="main-header" id="main-page-header">
-        <nav class="main-nav">
-
-            <a class="nav__title" href="#">50 Mira</a>            
-        </nav>
-    </header>
-
-    <main class="main-content">
-        <section class="section-container" id="main-menu">
-            <!-- Title to be determined -->
-            <h1 class="menu-header">Tic-Tac-Toe!</h1>
-
-            <button id="play-click"> Click to play</button>
-        </section>
-        <section class="section-container" id="score-section-container">
-        <div class="score-flex">
-            <table class="score-container">
-                <!-- <h1>Scoreboard</h1> -->
-                <thead>
-                    <tr class="score-row">
-                        <td class="score-cell score-first-column" id="player-one-name">Player 1</td>
-                        <td class="score-cell" id="player-one-score">0</td>    
-                    </tr>
-                </thead>
-                    
-                <tr class="score-row">
-                    
-                    <td class="score-cell score-first-column" id="player-two-name">Player 2</td>
-                    <td class="score-cell" id="player-two-score">0</td>
-                </tr>
-
-                <tr class="score-row">
-                    
-                    <td class="score-cell score-first-column" id="draw-name">Draws</td>
-                    <td class="score-cell" id="draw-score">0</td>
-                </tr>
-            </table>
-            <div class="active-player-container">
-                <h3 class="active-header">Active:</h3>
-                <div id="active-icon"></div>
-            </div>
         </div>
-        </section>
-
-        <section class="section-container" id="board-section">
-            
-            <div class="board-container">
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-                    <button class="board-square"></button>
-
-            </div>
-
-            <button id="surrender-button"><img id="white-flag" src="main/images/flag.png" alt="White Flag"> Surrender</button>
-            
-
-        </section>
     </main>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+
+    
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#config-web-app -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyBQYL8aRTVaQ-B7IspnfashdCnlxTmlaMg",
+        authDomain: "library1-4de0f.firebaseapp.com",
+        databaseURL: "https://library1-4de0f.firebaseio.com",
+        projectId: "library1-4de0f",
+        storageBucket: "library1-4de0f.appspot.com",
+        messagingSenderId: "785327227087",
+        appId: "1:785327227087:web:32fe5f3ce8bb860a"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+
     <script type="text/javascript" src="shared/js/shared.js"></script>
     <script type="text/javascript" src="main/js/main.js"></script>
+
+
 </body>
 </html>

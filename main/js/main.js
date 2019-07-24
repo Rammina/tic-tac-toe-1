@@ -1,3 +1,4 @@
+
 // Screen loader
 setTimeout(function () {
 	if (document.readyState === 'loading') {  // Loading hasn't finished yet
@@ -10,7 +11,7 @@ setTimeout(function () {
 	  console.log(" HTML loaded");
 	  document.querySelector(".loader-container").classList.add("no-display"); //Get rid of the loader
 	}
-  }, 30000000);
+  }, 600);
   
   // Checking SVG support
   var svgSupport = !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect;
@@ -32,815 +33,682 @@ setTimeout(function () {
 	  }
   }
 
-// Helper functions
-const helper = (() => {
-	let trapped = null;
-	const trap = () => {
-		
-		trapped = document.activeElement;
-	}
-	const retrieveTrap = () => {
-		return trapped;
-	};
-	const openModal = (modal) => {
-		trap();
-		modal.classList.add("show");
-		modal.firstElementChild.classList.add("show");
-		modal.setAttribute("aria-hidden", "false");
-		setTimeout(function(){
-			modal.firstElementChild.focus();
-		}, 155);
-	}
-	const closeModal = (modal) => {
-		modal.classList.remove("show");
-		modal.firstElementChild.classList.remove("show");
-		modal.setAttribute("aria-hidden", "true");
-		retrieveTrap().focus();
-	}
-	const showSection = (section) => {
-
-		section.classList.add("show");
-	}
-	const hideSection = (section) => {
-		section.classList.remove("show");
-	}
-
-	return {openModal, closeModal, showSection, hideSection};
-})();
-
-
-// Players storage
-const info = (() => {
-	let players = [];
-
-	const getPlayer = (index) => {
-		return players[index];
-
-	};
-	const insertPlayer = (player) => {
-		players.push(player);
-	}
-	const resetPlayers = () => {
-		players = [];
-	};
-
-	return {getPlayer, insertPlayer, resetPlayers};
-})();
-
-// gameboard
-
-const gameBoard = (() => {
-	let array = ["", "", "", "", "", "", "", "", ""];
-	let winningSquares = [];
-	let board = document.getElementById("board-section");
-	let squares = document.querySelectorAll(".board-square");
-	const disableButton = (position) => {
-		
-		squares[position].disabled = true;
-	};
-	const enableButton = (position) => {
-		squares[position].disabled = false;
-	}
-	const fillSquare = (position, icon) => {
-		array.splice(position, 1, icon);
-		disableButton(position);
-		console.log("Feel square was called ");
-	};
-	const emptySquares = () => {
-		for(let i = 0; i < squares.length; i++) {
-			array[i] = "";
-
-		}
-		console.log("empty squares was called ");
-	}
-	const lineFormed = (icon) => {
-		winningBlocks = [];
-		if(array[0] === icon && array[1] === icon && array[2] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [0, 1, 2];
-			return true;
-		}
-		else if(array[3] === icon && array[4] === icon && array[5] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [3, 4, 5];
-			return true;
-		}
-		else if(array[6] === icon && array[7] === icon && array[8] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [6, 7, 8];
-			return true;
-		}
-		else if(array[0] === icon && array[3] === icon && array[6] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [0, 3, 6];
-			return true;
-		}
-		else if(array[1] === icon && array[4] === icon && array[7] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [1, 4, 7];
-			return true;
-		}
-		else if(array[2] === icon && array[5] === icon && array[8] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [2, 5, 8];
-			return true;
-		}
-		else if(array[0] === icon && array[4] === icon && array[8] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [0, 4, 8];
-			return true;
-		}
-		else if(array[2] === icon && array[4] === icon && array[6] === icon) {
-			console.log("Line form return true;");
-			winningBlocks = [2, 4, 6];
-			return true;
-		}
-		console.log("Line form return false;");
-		return false;
-
-	};
-
-	const isDead = () => {
-		let empty = 0;
-		let emptySquare = null;
-		for(let i = 0; i < array.length; i++) {
-			if(array[i] === "") {
-				// Make sure that there is only one empty square
-				if(empty === 0) {
-
-					empty++;
-
-					// Keep track of a single empty square
-					emptySquare = i;
-				}
-				else{
-					// Reset the empty square tracking  if there are more than two empty squares
-					emptySquare = null;
-					return false;	
-				}
-			
-			}
-		}
-		
-		// Check if filling this Single empty square with either icon wins the game or not
-		array[emptySquare] = "X";
-		if(lineFormed("X") === true) {
-			array[emptySquare] = "";
-			return false;
-					
-		}
-		array[emptySquare] = "O";
-		if(lineFormed("O") === true) {
-			array[emptySquare] = "";
-			return false;
-		}
-		array[emptySquare] = "";
-		return true;
-	};
-
-	const highlightWinningBlocks = () =>{
-		for(let i = 0; i < winningBlocks.length; i++){
-			squares[winningBlocks[i]].classList.add("highlight");
-		}
-	}
-
-	const render = () =>{
-		// I'm not sure yet
-	}
-
-	const show = () => {
-		helper.showSection(board);
-	};
-
-	const hide = () => {
-		helper.hideSection(board);
-	};
-
-	return {disableButton, enableButton, fillSquare, emptySquares, lineFormed, isDead, show, hide, highlightWinningBlocks};
-})();
-
-const scoreBoard = (() => {
-
-	let playerOneScore;
-	let playerTwoScore;
-	let playerOneNameElement;
-	let playerTwoNameElement;
-	let playerOneScoreElement;
-	let playerTwoScoreElement;
-	let scoreBoardElement;
-	let drawScoreElement;
-	let activeIconElement;
-
-	const render = () => {
-		// Variable assignment for the elements
-		playerOneNameElement = document.getElementById("player-one-name");
-		playerTwoNameElement = document.getElementById("player-two-name");
-		playerOneScoreElement = document.getElementById("player-one-score");
-		playerTwoScoreElement = document.getElementById("player-two-score");
-		drawScoreElement = document.getElementById("draw-score");
-		activeIconElement = document.getElementById("active-icon");
-		scoreBoardElement = document.getElementById("score-section-container");
-
-
-		helper.showSection(scoreBoardElement);
-
-		playerOneScore = info.getPlayer(0).getPoints();
-		playerTwoScore = info.getPlayer(1).getPoints();
-		playerOneScoreElement.innerText = playerOneScore;
-		playerTwoScoreElement.innerText = playerTwoScore;
-		playerOneNameElement.innerText = info.getPlayer(0).getName();
-		playerTwoNameElement.innerText = info.getPlayer(1).getName();
-
-	};
-
-	const updateScores = () => {
-		playerOneScore = info.getPlayer(0).getPoints();
-		playerOneScoreElement.innerText = playerOneScore;
-
-		playerTwoScore = info.getPlayer(1).getPoints();
-		playerTwoScoreElement.innerText = playerTwoScore;
-	};
-
-	const updateDraws = (draws) => {
-		drawScoreElement.innerText = draws;
-	};
-
-	const restartScores = () => {
-		playerOneScore = 0;
-		playerOneScoreElement.innerText = playerOneScore;
-		playerTwoScore = 0;
-		playerTwoScoreElement.innerText = playerTwoScore;
-		updateDraws(0);
-	};
-	const activateIcon = (turn) => {
-		if(turn % 2 !== 0) {
-			activeIconElement.classList.remove("circle");
-			activeIconElement.classList.add("cross");
-
-		}
-		else if(turn % 2 === 0) {
-			activeIconElement.classList.remove("cross");
-			activeIconElement.classList.add("circle");
-
-		}
-	};
-
-	const show = () => {
-		helper.showSection(scoreBoardElement);
-	};
-
-	const hide = () => {
-		helper.hideSection(scoreBoardElement);
-	};
-
-	return {render, updateScores, updateDraws, restartScores, activateIcon, show, hide};
-})();
-
-// Gameboard to display on the Dom
-
-const displayController = (() => {
-	
-	let playerTurn = null;
-	let turn = 1;
-	let icon = "cross";
-	let draws = 0;
-	let squares = document.querySelectorAll(".board-square");
-	let surrenderElement = document.getElementById("surrender-button");
-
-	let turnModal = document.getElementById("turn-backdrop");
-	let turnHeader = document.getElementById("turn-modal-header");
-	let winModal = document.getElementById("win-backdrop");
-	let winHeader = document.getElementById("win-modal-header");
-	let surrenderModal = document.getElementById("surrender-backdrop");
-	let surrenderHeader = document.getElementById("surrender-modal-header");
-
-	const getTurnNumber = () => {
-		
-		return turn;
-	};
-	const getPlayerTurnNumber = () => {
-		
-		return playerTurn;
-	}
-	const getIcon = () => {
-		let currentIcon = icon;
-		return currentIcon;
-	};
-
-	const startTurn = () => {
-		// Display the modal or backdrop that states whose turn it is
-		
-		scoreBoard.activateIcon(getTurnNumber());
-
-		if(getPlayerTurnNumber() % 2 === 0) {
-			turnHeader.innerText = `${info.getPlayer(1).getName()}'s Turn`;
-			console.log(turnHeader.innerText);
-		}
-		else{
-			turnHeader.innerText = `${info.getPlayer(0).getName()}'s Turn`;
-			console.log(turnHeader.innerText);
-		}
-
-		helper.openModal(turnModal);
-		
-		for(let i = 0; i < squares.length; i++) {
-			if(!(squares[i].classList.contains("cross") || squares[i].classList.contains("circle"))) { 
-				gameBoard.enableButton(i);
-			}
-		}
-		setTimeout(function() {
-
-			helper.closeModal(turnModal);
-		}, 800);
-	};
-
-	const startGame = () => {
-		turn = 1;
-		icon = "cross";
-		playerTurn = playerTurn || (Math.floor((Math.random() * 2) + 1));
-
-		if(playerTurn % 2 !== 0) {
-			info.getPlayer(0).setIcon(1);
-			info.getPlayer(1).setIcon(2);
-		}
-		else{
-			info.getPlayer(0).setIcon(2);
-			info.getPlayer(1).setIcon(1);
-		}
-		
-		for(let i = 0; i < squares.length; i++) {
-			squares[i].classList.remove("cross");
-			squares[i].classList.remove("circle");
-			squares[i].classList.remove("highlight");
-			gameBoard.enableButton(i);
-		}
-		gameBoard.emptySquares();
-		startTurn();
-	};
-
-	const endTurn = () => {
-		playerTurn++;
-		turn++;
-		if((getTurnNumber()) % 2 === 0) {
-			icon = "circle";
-		}
-		else{
-			icon = "cross";
-		}
-		for(let i = 0; i < squares.length; i++) {
-			gameBoard.disableButton(i);
-		}
-	};
-	const endGame = (winner) => {
-		// State the winner of the game
-		console.log("endgame was called ");
-		if(winner === null) {
-			winHeader.innerText = `Draw! No one wins...`;
-			draws++;
-			scoreBoard.updateDraws(draws);
-		}
-		else{
-			winHeader.innerText = `${winner} Wins!`;
-		}
-
-		helper.openModal(winModal);
-
-	}
-	 
-	for(let i = 0; i < squares.length; i++) {
-		squares[i].addEventListener("click", function(){
-			if(!(squares[i].classList.contains("cross") || squares[i].classList.contains("circle"))) {
-				squares[i].classList.add(getIcon());
-				if((getPlayerTurnNumber()) % 2 === 0) {
-					info.getPlayer(1).placeIcon(i);
-				}
-				else{
-					info.getPlayer(0).placeIcon(i);
-				}
-
-			}			
-		});
-	}
-
-	surrenderElement.addEventListener("click", function(){
-		helper.openModal(surrenderModal);
-
-		promptSurrender.setTarget((getPlayerTurnNumber()) % 2);
-	
-	
-	});
-
-
-	return {startGame, startTurn, endTurn, endGame};
-})();
-
-
-// Player factory function
-const Player = (name) => {
-	
-	let icon;
-	let points = 0;
-
-	const thisPlayer = this;
-	const getName = () => name;
-	const setIcon = (turn) => {
-		if((turn % 2) !== 0) {icon = "X";}
-		else if((turn % 2) === 0) {icon = "O";}
-	};
-	
-	
-	
-	const getPoints = () => {
-		return points;
-	};
-	const earnPoint = () =>{
-		// Temporary placeholder
-		console.log("earn point was called;");
-		console.log(`${name} wins the round, and earns a point`);
-		points++;
-		scoreBoard.updateScores();
-		displayController.endGame(getName());
-	};
-	
-	const surrender = (turn) =>{
-		// Temporary placeholder
-		console.log(`${name} Has surrendered`);
-		if((turn % 2) !== 0) {
-			setTimeout(function () {
-				console.log("Player 2 earns a point");
-				console.log(turn);
-				info.getPlayer(1).earnPoint();
-			}, 750);
-			
-
-		}
-		else {
-			setTimeout(function () {
-				console.log("Player 1 earns a point");
-				console.log(turn);
-				info.getPlayer(0).earnPoint();	
-			}, 750);
-			
-		}
-		
-	};
-	
-	const placeIcon = (position) => {
-		gameBoard.fillSquare(position, icon);
-		console.log("checking between earned point or not ");
-		displayController.endTurn();
-		if(gameBoard.isDead()) {
-			setTimeout(function(){
-				displayController.endGame(null);
-			}, 2000)
-		}
-		else if(gameBoard.lineFormed(icon)) {
-			setTimeout(function(){
-				gameBoard.highlightWinningBlocks();
-			}, 100)
-			setTimeout(function () {
-
-				earnPoint();
-			}, 2000);
-			
-
-		}
-		else{
-			console.log("turn ended without earning a point ");
-			
-
-			setTimeout(function(){
-				displayController.startTurn();
-			}, 750);
-			
-		}
-	};
-
-	return {getName, getPoints, setIcon, placeIcon, surrender, earnPoint};
+var general = {
+	main: document.querySelector(".main-content"),
+	backdrops: document.querySelectorAll(".backdrop"),
+	closeButtons: document.querySelectorAll(".modal__close"),
+	navTitle: document.querySelector(".nav__title")
 }
 
-const mainMenu = (() => {
-	let menuScreen;
-	let menuButton;
+var helper = { 
+	touched: false,
+	counter: 0,
+	trappedObject: null,
+	errorCounts: [],
 
-	const render = () => {
-		menuScreen = document.getElementById("main-menu");
-		menuButton = document.getElementById("play-click");
-		helper.showSection(menuScreen);
-		menuScreen.addEventListener("click", function(){
-			helper.hideSection(menuScreen);
-			promptNames.openIntro();
-
-		});
-	};
-
-	const show = () => {
-		gameBoard.hide();
-		scoreBoard.hide();
-		helper.showSection(menuScreen);
-		menuButton.focus();
-	};
-
-	return {render, show};
-})();
-
-const promptNames = (() => {
-	const render = () => {
-           let content = document.createElement("div");
-	};
-		let introModal = document.getElementById("intro-backdrop");
-		let introContent = document.getElementById("intro-modal");
-		let introHeader = document.getElementById("intro-modal-header");
-		let nameField = document.getElementById("player-name-field");
-		let submitButton = document.getElementById("intro-submit");
-		
-		let nameConfirmModal = document.getElementById("name-confirm-backdrop");
-		let nameConfirmHeader = document.getElementById("name-confirm-modal-header");
-		let playerName = document.getElementById("player-name");
-		let yesButton = document.getElementById("yes-modal-button");
-		let noButton = document.getElementById("no-modal-button");
-		
-		let introTabbables = introModal.querySelectorAll("input, button");
-		let nameConfirmTabbables = nameConfirmModal.querySelectorAll("button");
-		let playerNumber = 1;
-		let done = false;
-		let namePlaceHolder = [];
-
-		const openIntro = () => {
-			helper.openModal(introModal);
+	openModal(modal){
+		helper.trap();
+		modal.classList.add("show");
+		modal.firstElementChild.classList.add("show");
+		modal.firstElementChild.setAttribute("aria-hidden", "false");
+	},
+	closeModal(modal){
+		modal.classList.remove("show");	
+		modal.firstElementChild.classList.remove("show");
+		modal.firstElementChild.setAttribute("aria-hidden", "true");
+		helper.trappedObject.focus();
+	},
+	touch(){
+		helper.touched = true;
+	},
+	untouch(){
+		helper.touched = false;
+	},
+	trap(){
+		helper.trappedObject = document.activeElement;
+	},
+	// Clear all error messages
+	clearErrors(){
+		let textFields = document.querySelectorAll(".text-field");
+		for (let i = 0; i < textFields.length; i++) {
 			
-		};
+			textFields[i].classList.remove("invalid");
 
-		function submitIntro() {
-
-			if(nameField.value === "") {
-				nameField.value = `Anonymous ${playerNumber}`;
-
+			let error = textFields[i].parentNode.querySelector(".modal-error-message");
+			if(error !== null && error !== undefined) {
+				error.parentNode.removeChild(error);
+				helper.errorCounts[i] = 0;
 			}
-			let playerName = nameField.value;
-			nameField.value = "";
-			// namePlaceHolder.push(playerName);
-
-			let challenger = Player(playerName);
-			info.insertPlayer(challenger);
-			playerNumber++;
-
-			
-		}
-
-		function nextPlayer() {
-
-			if(playerNumber > 2) {
-				playerNumber = 1;
-				done = true;
-			}
-			introHeader.innerText = `Player ${playerNumber}'s Name`;
-		}
+		}	
+	},
+	// Clear all empty field error messages
+	clearEmptyErrors(){
 		
-		submitButton.addEventListener("click", function(event){
-			event.preventDefault();
-			nameConfirmHeader.innerText = `Player ${playerNumber}'s Name`;
-			if(nameField.value === ""){
-				playerName.innerText = `Anonymous ${playerNumber}`;
-			}
-			else{
-				playerName.innerText = `${nameField.value}`;
-			}
-			helper.openModal(nameConfirmModal);
-			nameConfirmModal.focus();			
+		let textFields = document.querySelectorAll(".text-field");
+		for (let i = 0; i < textFields.length; i++) {
+			if (textFields[i].value === "") {
+				textFields[i].classList.remove("invalid");
 
-		}); 
-		nameConfirmModal.addEventListener("keydown", function(event){
-			if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
-				event.preventDefault();
-				helper.closeModal(nameConfirmModal);
-			}
-		});
-		noButton.addEventListener("click", function(event){
-			helper.closeModal(nameConfirmModal);
-		});
-
-		yesButton.addEventListener("click", function(event){
-			submitIntro();
-			helper.closeModal(nameConfirmModal);
-			helper.closeModal(introModal);
-			nextPlayer();
-			if(done === false) {
-				helper.openModal(introModal);
-
-			}
-			else {
-				scoreBoard.render();	
-				displayController.startGame();
-				
-				helper.showSection(document.getElementById("board-section"));
-				done = false;
-			}
-		});
-		for(let i = 0; i < introTabbables.length; i++){
-			introTabbables[i].addEventListener("keydown", function(event){
-				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
-					event.preventDefault();
-					let previous = i - 1;
-
-					if(previous < 0) {
-						introTabbables[introTabbables.length - 1].focus();
-
+				let error = textFields[i].parentNode.querySelector(".modal-error-message");
+					if(error !== null && error !== undefined) {
+						error.parentNode.removeChild(error);
+						helper.errorCounts[i] = 0;
 					}
-					else{
-						introTabbables[previous].focus();
-					}
-				}
-				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
-					event.preventDefault();	
-					let next = i + 1;
-
-					if(next === introTabbables.length) {
-						introTabbables[0].focus();
-
-					}
-					else{
-						introTabbables[next].focus();
-					}
-				}
-			});	
+			}
 		}
-		for(let i = 0; i < nameConfirmTabbables.length; i++){
-			nameConfirmTabbables[i].addEventListener("keydown", function(event){
-				
-				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
-					event.preventDefault();
-					let previous = i - 1;
+	}
+	
+};
 
-					if(previous < 0) {
-						nameConfirmTabbables[nameConfirmTabbables.length - 1].focus();
+var addModal = {
+	backdrop: document.getElementById("add-backdrop"),
+	close: document.getElementById("add-close"),
+	content: document.getElementById("add-content"),
+	title: document.getElementById("book-title-field"),
+	author: document.getElementById("book-author-field"),
+	pages: document.getElementById("book-pages-field"),
+	checkbox: document.getElementById("read-checkbox"),
+	submit: document.getElementById("book-submit"),
+	
+	// Clear all input fields
+	clearForm(){
+		addModal.title.value = "";
+		addModal.author.value = "";
+		addModal.pages.value = "";
+		addModal.checkbox.checked = false;
+	},
+	// Verify before submitting the form
+	verifyThenSubmit(){
+		helper.clearErrors();
 
-					}
-					else{
-						nameConfirmTabbables[previous].focus();
+		// Count the number of empty and invalid fields
+		let empty = 0;
+		let invalid = 0;
+
+		{//Listeners for the text fields
+		
+		let textFields = document.querySelectorAll(".text-field");
+		for(let i = 0; i < textFields.length; i++) {
+
+				if(textFields[i].value === "") {
+
+					textFields[i].classList.add("invalid");
+					textFields[i].insertAdjacentHTML("afterend", `<p class="modal-error-message">Please fill up this field.</p>`); 
+					helper.errorCounts[i]++;
+					empty++;
+				}
+
+				// Check if it's the page number text field
+				if(textFields[i] === document.querySelector("#book-pages-field")) {
+					if(textFields[i].value <= 0 && textFields[i].value !== "") {
+
+						textFields[i].classList.add("invalid");
+						textFields[i].insertAdjacentHTML("afterend", `<p class="modal-error-message">Invalid page number.</p>`); 
+						helper.errorCounts[i]++;
+						invalid++;
 					}
 				}
-				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
-					event.preventDefault();	
-					let next = i + 1;
 
-					if(next === nameConfirmTabbables.length) {
-						nameConfirmTabbables[0].focus();
-
-					}
-					else{
-						nameConfirmTabbables[next].focus();
-					}
-				}
-			});	
+			}
 		}
-	return {openIntro};
-})();
-
-const promptPlayMore = (() => {
-	let winModal = document.getElementById("win-backdrop");
-	let winHeader = document.getElementById("win-modal-header");
-	let againButton = document.getElementById("again-modal-button");
-	let quitButton = document.getElementById("quit-modal-button");
-	let winTabbables = winModal.querySelectorAll("button");
-
-
-
-	againButton.addEventListener("click", function(){
-		displayController.startGame();
-		helper.closeModal(winModal);
-
-	});
-
-	function quitGame() {
-
-		// Stop playing games and show the main menu
-		helper.closeModal(winModal);
-		info.resetPlayers();
-		mainMenu.show();
-	};
-
-	winModal.addEventListener("keydown", function(event){
-		if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
-			event.preventDefault();
-			quitGame();
-		}		
-	});
-
-	quitButton.addEventListener("click", function(){
-		quitGame();
-	});
-
-	for(let i = 0; i < winTabbables.length; i++){
-			winTabbables[i].addEventListener("keydown", function(event){
-				
-				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
-					event.preventDefault();
-					let previous = i - 1;
-
-					if(previous < 0) {
-						winTabbables[winTabbables.length - 1].focus();
-
-					}
-					else{
-						winTabbables[previous].focus();
-					}
-				}
-				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
-					event.preventDefault();	
-					let next = i + 1;
-
-					if(next === winTabbables.length) {
-						winTabbables[0].focus();
-
-					}
-					else{
-						winTabbables[next].focus();
-					}
-				}
-			});	
+		// Abort if there are empty or invalid fields
+		if(empty != 0 || invalid != 0) {
+			return;
 		}
 
-	// helper.openModal(winModal);
-})();
+		// Submit if there are no errors
+		bookList.renderRow(addModal.title.value, addModal.author.value, addModal.pages.value, addModal.checkbox.checked);
+		addModal.clearForm();
+		helper.closeModal(addModal.backdrop);
 
-const promptSurrender = (() => {
-	let target = null;
-	let surrenderModal = document.getElementById("surrender-backdrop");
-	let surrenderHeader = document.getElementById("surrender-modal-header");
-	let surrenderButton = document.getElementById("surrender-modal-button");
-	let abortButton = document.getElementById("abort-modal-button");
-
-	let surrenderTabbables = surrenderModal.querySelectorAll("button");
-
-	const setTarget = (number) => {
-		target = number;
-	};
-
-	surrenderModal.addEventListener("keydown", function(event){
-		if(event.key === "Escape" || event.which === 27 || event.keyCode === 27){
-			event.preventDefault();
-			helper.closeModal(surrenderModal);
-		}		
-	});
-
-	surrenderButton.addEventListener("click", function(){
-		if(target === 0) {
-			info.getPlayer(1).surrender(0);	
-		}
-		else{
-			info.getPlayer(0).surrender(1);
-		}
-		helper.closeModal(surrenderModal);
-
-	});
-
-	abortButton.addEventListener("click", function(){
-		// Stop playing games and show the main menu
-		helper.closeModal(surrenderModal);
-	});
-
-	for(let i = 0; i < surrenderTabbables.length; i++){
-			surrenderTabbables[i].addEventListener("keydown", function(event){
-
-				if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
-					event.preventDefault();
-					let previous = i - 1;
-
-					if(previous < 0) {
-						surrenderTabbables[surrenderTabbables.length - 1].focus();
-
-					}
-					else{
-						surrenderTabbables[previous].focus();
-					}
-				}
-				else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
-					event.preventDefault();	
-					let next = i + 1;
-
-					if(next === surrenderTabbables.length) {
-
-						surrenderTabbables[0].focus();
-
-					}
-					else{
-						surrenderTabbables[next].focus();
-					}
-				}
-			});	
+		
 	}
 
-	return {setTarget};
-})();
-
-// This guarantees a reset before any future commands
-info.resetPlayers();
-mainMenu.render();
+}
+addModal.tabbables = addModal.content.querySelectorAll("input, [tabindex='-1']");
 
 
+var bookList = { 
+	addButton: document.getElementById("add-book"),
+	table: document.getElementById("books-list-1"),
+	tableBody: document.querySelector(".books-list-body"),
+	library: [],
+	Book: function(title, author, pages, read){
+		this.title = title;
+		this.author = author;
+		this.pages = pages;
+		this.read = read;
+	},
+	createBookRow(title, author, pages, read){
+				
+			let item = document.createElement("tr");
+			item.classList.add("books-row");
+			item.classList.add("books-item");
+			item.insertAdjacentHTML("beforeend", `
+                    <td class="books-number"></td>
+                    <td class="books-title">${title}</td>
+                    <td class="books-author">${author}</td>
+                    <td class="books-pages">${pages}</td>
+                    `);
+		
+			if(read === false) {
+				item.insertAdjacentHTML("beforeend", `
+					<td class="books-read">
+						<div class="books-read-container" tabindex="0" aria-label="not read, toggle to change to read" role="button">
+							<img class="books-read-icon not-read" src="main/images/x-icon.png" alt="X icon">
+						</div>	
+					</td>`);
+				
+			}
+			else if(read === true) {
+				item.insertAdjacentHTML("beforeend", `
+					<td class="books-read">
+						<div class="books-read-container" tabindex="0" aria-label="read, toggle to change to not read" role="button">
+							<img class="books-read-icon read" src="main/images/check.png" alt="check icon">
+						</div>
+					</td>`);
+			}
+            item.insertAdjacentHTML("beforeend", `
+            	<td class="books-delete">
+            		<div class="books-delete-container" tabindex="0" aria-label="delete this book" role="button">
+                        <img class="delete-png" src="main/images/delete.png" alt="Trash bin">
+                    </div>
+                </td>`);
+        	return item;
+	},
+	toggleReadIcon(readContainer, readIcon, newBook){
+		if (readIcon.classList.contains("read")) {
+			// Make it look like it's not read
+			readIcon.classList.remove("read");
+			readIcon.classList.add("not-read");
+			readIcon.setAttribute("src", "main/images/x-icon.png");
+			readIcon.setAttribute("alt", "X icon");
+			// Urgent: replace icon to container
+			readContainer.setAttribute("aria-label", "not read, toggle to change to read");
+			readContainer.setAttribute("role", "button");
+		}
+		else if (readIcon.classList.contains("not-read")) {
+			// Make it look like it's not read
+			readIcon.classList.remove("not-read");
+			readIcon.classList.add("read");
+			readIcon.setAttribute("src", "main/images/check.png");
+			readIcon.setAttribute("alt", "check icon");
+			readContainer.setAttribute("aria-label", "read, toggle to change to not read");
+			readContainer.setAttribute("role", "button");
+			}
+		newBook.toggleRead();
+		var firebaseRef = firebase.database().ref();
+		firebaseRef.child("library").set(JSON.stringify(bookList.library));		
+		// localStorage.setItem("library", JSON.stringify(bookList.library));
+
+	},
+	createDeleteModal(newBook, item){
+				let deleteModal = document.createElement("div");
+				deleteModal.classList.add("backdrop");
+				
+				deleteModal.setAttribute("id", "delete-backdrop");
+				deleteModal.insertAdjacentHTML("beforeend", `
+					<section class="modal-container" id="delete-modal" tabindex="0" role="dialog" aria-hidden="false">
+                		<div class="modal__close" id="delete-close" tabindex="-1" role="button" aria-label="close button">
+                    		<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        	<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/silviu-runceanu" title="Silviu Runceanu">Silviu Runceanu</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div> -->
+                        	<image href="https://image.flaticon.com/icons/svg/53/53804.svg" src="main/images/close.svg" width="90" height="90" alt="Close Button"/>
+                    		</svg>
+                    		<img class="hide-png no-display svg-fallback modal__close-png" src="main/images/close.png" alt="Close Button">
+                		</div>
+                		<h1 class="modal-header">Delete this Book</h1>
+                		<p class="modal-paragraph">Are you sure you want to remove this book from the list?</p>
+                		<div class="button-container">
+                    		<button class="modal-button" id="cancel-modal-button">Cancel</button>
+                    		<button class="modal-button" id="delete-modal-button">Delete</button>
+                		</div>
+                	</section>`);
+
+				// Exit the modal when you press escape
+					deleteModal.querySelector("#delete-modal").addEventListener("keydown", function(event){
+						if(event.key === "Escape" || event.which === 27 || event.keyCode === 27) {
+							deleteModal.classList.remove("show");
+							general.main.removeChild(deleteModal);
+							helper.trappedObject.focus();
+						}
+						else if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+							event.preventDefault();
+							deleteModal.querySelector(".modal__close").focus();
+						}
+					});
+
+				
+
+				// Enable tabbing Through the delete modal
+				{
+					let tabbables = deleteModal.querySelectorAll("button, div[tabindex='-1']");
+					for(let i = 0; i < tabbables.length; i++) {
+						tabbables[i].addEventListener("keydown", function(event){
+							event.stopPropagation();
+							if(event.key === "Escape" || event.which === 27 || event.keyCode === 27) {
+								deleteModal.classList.remove("show");
+								general.main.removeChild(deleteModal);
+								helper.trappedObject.focus();
+							}
+							else if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+								event.preventDefault();
+								let previous = i - 1;
+
+								if(previous < 0) {
+									tabbables[tabbables.length - 1].focus();
+
+								}
+								else{
+									tabbables[previous].focus();
+								}
+							}
+							else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+								event.preventDefault();	
+								let next = i + 1;
+
+								if(next === tabbables.length) {
+									tabbables[0].focus();
+
+								}
+								else{
+									tabbables[next].focus();
+								}
+							}
+						});
+
+					}
+				}
+
+				// Close the delete modal when clicking the delete buttonAs well as delete the row and book item
+				function focusAfterDelete() {
+					let deleteIcon = item.querySelector(".books-delete-container");
+					let deleteIcons = document.querySelectorAll(".books-delete-container");
+					for(let i = 0; i < deleteIcons.length; i++) {
+						if(deleteIcons[i] === deleteIcon && i !== 0) {
+							let previous = i - 1;
+							deleteIcons[previous].focus();
+							return;
+						}
+					}
+					general.navTitle.focus();
+				}
+				function confirmDeleteModal() {
+						focusAfterDelete();
+						bookList.tableBody.removeChild(item);
+						bookList.library.splice(bookList.library.findIndex(book => book.counter === newBook.counter), 1);
+						var firebaseRef = firebase.database().ref();
+						firebaseRef.child("library").set(JSON.stringify(bookList.library));	
+						// localStorage.setItem("library", JSON.stringify(bookList.library));
+						deleteModal.classList.remove("show");
+						general.main.removeChild(deleteModal);
+						helper.touch();
+				};
+
+				setTimeout(function(){
+					deleteModal.querySelector("#delete-modal-button").addEventListener("touchstart", function(){
+						confirmDeleteModal();
+						helper.touch();
+					});
+					deleteModal.querySelector("#delete-modal-button").addEventListener("click", function(){
+						if(!(helper.touched)) {
+							confirmDeleteModal();
+						}
+						helper.untouch();
+					});
+					deleteModal.querySelector("#delete-modal-button").addEventListener("keydown", function(event){
+						if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+							confirmDeleteModal();
+						}
+					});
+				}, 0);
+                
+				setTimeout(function(){ 
+					deleteModal.querySelector("#cancel-modal-button").addEventListener("touchstart", function(){
+						deleteModal.classList.remove("show");
+						general.main.removeChild(deleteModal);
+						helper.trappedObject.focus();
+						helper.touch();
+					});
+
+					deleteModal.querySelector("#cancel-modal-button").addEventListener("click", function(){
+						if(!(helper.touched)) {
+							deleteModal.classList.remove("show");
+							general.main.removeChild(deleteModal);
+							helper.trappedObject.focus();
+						}						
+					helper.untouch();
+					});
+
+					deleteModal.querySelector("#cancel-modal-button").addEventListener("keydown", function(event){
+							if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+								deleteModal.classList.remove("show");
+								general.main.removeChild(deleteModal);
+								helper.trappedObject.focus();
+							}
+					});
+				}, 0);
+
+                setTimeout(function(){ 
+					deleteModal.addEventListener("touchstart", function(event){
+						if(!((event.target === deleteModal.firstElementChild) || (deleteModal.firstElementChild.contains(event.target)))) {
+							deleteModal.classList.remove("show");
+							general.main.removeChild(deleteModal);
+							helper.trappedObject.focus();
+						}
+						helper.touch();	
+					});
+	
+					deleteModal.addEventListener("click", function(event){
+						if(!(helper.touched)) {
+							if(!((event.target === deleteModal.firstElementChild) || (deleteModal.firstElementChild.contains(event.target)))) {
+								deleteModal.classList.remove("show");
+								general.main.removeChild(deleteModal);
+								helper.trappedObject.focus();
+							}
+						}
+						helper.untouch();
+					});
+				}, 0);
+				setTimeout(function(){ 
+					deleteModal.querySelector("#delete-close").addEventListener("touchstart", function(event){
+						deleteModal.classList.remove("show");
+						general.main.removeChild(deleteModal);
+						helper.trappedObject.focus();
+						helper.touch();	
+					});
+
+					deleteModal.querySelector("#delete-close").addEventListener("click", function(event){
+						if(!(helper.touched)) {
+							deleteModal.classList.remove("show");
+							general.main.removeChild(deleteModal);
+						}
+						helper.untouch();
+					});
+				}, 0);
+				helper.trap();
+				general.main.appendChild(deleteModal);
+				deleteModal.classList.add("show");
+				document.querySelector("#delete-modal").focus();
+
+	},
+	renderRow(title, author, pages, read){
+		// To prevent bottleneck
+		setTimeout(function(){ 
+			// At the book to the HTML document
+			let item = bookList.createBookRow(title, author, pages, read);
+			            
+            // Add the book to the array
+            let newBook = new bookList.Book(title, author, pages, read);
+
+            // Unique counter system so each book has its unique value
+            newBook.counter = helper.counter;
+            helper.counter++;
+
+			bookList.library.push(newBook);
+			var firebaseRef = firebase.database().ref();
+			firebaseRef.child("library").set(JSON.stringify(bookList.library));
+			// localStorage.setItem("library", JSON.stringify(bookList.library));
+
+			let readContainer = item.querySelector(".books-read-container");
+			let readIcon = item.querySelector(".books-read-icon");
+			setTimeout(function(){
+				readContainer.addEventListener("touchstart", function(){
+					bookList.toggleReadIcon(readContainer, readIcon, newBook);
+
+					helper.touch();
+				});
+			}, 0);
+			setTimeout(function(){ 
+				readContainer.addEventListener("click", function(){
+					if(!(helper.touched)) {
+						bookList.toggleReadIcon(readContainer, readIcon, newBook);
+					}
+			
+					helper.untouch();
+				});
+			}, 0);
+
+			setTimeout(function(){ 
+				readContainer.addEventListener("keydown", function(event){
+					if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+						bookList.toggleReadIcon(readContainer, readIcon, newBook);
+					}
+				
+				});
+			}, 0);
+			
+			let deleteIcon = item.querySelector(".books-delete-container");
+
+			deleteIcon.addEventListener("touchstart", function(){
+				event.preventDefault();
+				bookList.createDeleteModal(newBook, item);
+				helper.touch();
+			});
+			deleteIcon.addEventListener("click", function(){
+				if(!(helper.touched)) {
+					bookList.createDeleteModal(newBook, item);
+				
+				}
+				helper.untouch();
+			});
+			deleteIcon.addEventListener("keydown", function(event){
+				if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+					bookList.createDeleteModal(newBook, item);
+					}	
+			});
+			bookList.tableBody.appendChild(item);
+		}, 0);
+			
+	},
+	
+	renderLibrary(library){
+		// let counter = 1;
+		for (let book of library){
+			bookList.renderRow(book.title, book.author, book.pages, book.read);
+		}
+	},
+
+};
+
+bookList.Book.prototype.toggleRead = function () {
+	this.read = !(this.read);
+}
+
+setTimeout(function(){
+	bookList.addButton.addEventListener("touchstart", function(){
+		event.preventDefault();
+		helper.trap();
+		helper.openModal(addModal.backdrop);
+		addModal.content.focus();
+		helper.touch();
+	});
+	
+	bookList.addButton.addEventListener("click", function(){
+		if(!(helper.touched)) {
+			helper.trap();
+			helper.openModal(addModal.backdrop);
+			addModal.content.focus();
+		}
+		helper.untouch();
+		
+	});
+}, 0);
+
+setTimeout(function(){
+	// Intended general modal backdrop closer
+	for(let i = 0; i < general.backdrops.length; i++) {
+		general.backdrops[i].addEventListener("touchstart", function(event){
+			if(!((event.target === general.backdrops[i].firstElementChild) || (general.backdrops[i].firstElementChild.contains(event.target)))) {
+				helper.clearEmptyErrors();
+				helper.closeModal(general.backdrops[i]);
+			}
+			helper.touch();	
+		});
+
+		general.backdrops[i].addEventListener("click", function(event){
+			if(!(helper.touched)) {
+
+				if(!((event.target === general.backdrops[i].firstElementChild) || (general.backdrops[i].firstElementChild.contains(event.target)))) {
+					helper.clearEmptyErrors();
+					helper.closeModal(general.backdrops[i]);
+				}
+			}
+			helper.untouch();
+		});
+	}
+}, 0);
+
+setTimeout(function(){
+	// General close button modal closer
+	for(let i = 0; i < general.closeButtons.length; i++) {
+		general.closeButtons[i].addEventListener("touchstart", function(event){
+			helper.clearEmptyErrors();
+			helper.closeModal(general.backdrops[i]);
+			helper.touch();	
+		});
+
+		general.closeButtons[i].addEventListener("click", function(event){
+			if(!(helper.touched)) {
+				helper.clearEmptyErrors();
+				helper.closeModal(general.backdrops[i]);
+			}
+			helper.untouch();
+		});
+		general.closeButtons[i].addEventListener("keydown", function(event){
+			if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+				helper.clearEmptyErrors();
+				helper.closeModal(general.backdrops[i]);
+			}
+		});
+
+	}
+}, 0);
 
 
+setTimeout(function(){
+	// Enable escape button when focusing add modal
+	addModal.content.addEventListener("keydown", function(event){
+		if(event.key === "Escape" || event.which === 27 || event.keyCode === 27) {
+			helper.closeModal(addModal.backdrop);
+		}
+		else if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+				event.preventDefault();
+				document.getElementById("add-close").focus();
+		}
+	});
+}, 0);
+
+setTimeout(function(){
+	// Enable tab scrolling in the add modal
+	for(let i = 0; i < addModal.tabbables.length; i++) {
+		addModal.tabbables[i].addEventListener("keydown", function(event){
+			event.stopPropagation();	
+			if(event.key === "Escape" || event.which === 27 || event.keyCode === 27) {
+				helper.closeModal(addModal.backdrop);		
+			}
+			else if(event.shiftKey && (event.key === "Tab" || event.which === 9 || event.keyCode === 9)) {
+				event.preventDefault();
+				let previous = i - 1;
+				if(previous < 0) {
+					addModal.tabbables[addModal.tabbables.length - 1].focus();
+				}		
+				else{
+					addModal.tabbables[previous].focus();
+				}
+			}
+			else if(event.key === "Tab" || event.which === 9 || event.keyCode === 9) {
+				event.preventDefault();
+				let next = i + 1;
+				if(next === addModal.tabbables.length) {
+					addModal.tabbables[0].focus();
+				}
+				else{
+					addModal.tabbables[next].focus();
+				}
+			}
+		});
+	}		
+}, 0);
+
+
+setTimeout(function () {
+	//Listeners for the text fields
+	let textFields = document.querySelectorAll(".text-field");
+	for(let i = 0; i < textFields.length; i++) {
+		helper.errorCounts[i] = 0;
+		textFields[i].addEventListener("blur", function(){
+			if(helper.errorCounts[i] !== 0) {
+				let error = textFields[i].parentNode.querySelector(".modal-error-message");
+				textFields[i].parentNode.removeChild(error);			
+				helper.errorCounts[i] = 0;
+			}
+			if(textFields[i].value === "") {
+				textFields[i].classList.add("invalid");
+				textFields[i].insertAdjacentHTML("afterend", `<p class="modal-error-message">Please fill up this field.</p>`); 
+				helper.errorCounts[i]++;
+			}
+
+			// Check if it's the page number text field
+			if(textFields[i] === document.querySelector("#book-pages-field")) {
+				if(textFields[i].value <= 0 && textFields[i].value !== "") {
+					textFields[i].classList.add("invalid");
+					textFields[i].insertAdjacentHTML("afterend", `<p class="modal-error-message">Invalid page number.</p>`); 
+					helper.errorCounts[i]++;
+				}
+			}
+		});
+		textFields[i].addEventListener("focus", function(){
+			textFields[i].classList.remove("invalid");
+		});
+	}
+}, 0);
+
+// Submit listener for the modal form
+addModal.submit.addEventListener("touchstart", function(event){
+	event.preventDefault();
+	addModal.verifyThenSubmit();
+	helper.touch();
+});
+
+addModal.submit.addEventListener("click", function(event){
+	if(!(helper.touched)) {
+		event.preventDefault();
+		addModal.verifyThenSubmit();		
+		
+	}
+	helper.untouch();
+});
+
+addModal.submit.addEventListener("keydown", function(event){
+	if(event.key === "Enter" || event.which === 13 || event.keyCode === 13) {
+		event.preventDefault();
+		addModal.verifyThenSubmit();
+	}
+});
+
+setTimeout(function(){
+	// Retrieve the library from storage and render it
+	var temporary = {
+		// library: JSON.parse(localStorage.getItem("library")),
+		library: []
+	}
+
+	var firebaseLibraryRef = firebase.database().ref().child("library");
+	firebaseLibraryRef.on('value', function(datasnapshot){
+		temporary.library = JSON.parse(datasnapshot.val());
+		console.log(datasnapshot.val());
+	});
+	
+	console.log(`Stored library contains:`);
+	console.log(temporary.library);
+
+	setTimeout(function(){ 
+		// Check if the library has any contents before rendering
+		if(temporary.library) {
+			bookList.renderLibrary(temporary.library);
+		} 
+	}, 0);
+}, 0);
 
 
 
